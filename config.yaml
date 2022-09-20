@@ -1,0 +1,49 @@
+baseURL: bruol.me
+languageCode: en-us
+title: bruol
+theme: PaperMod
+
+enableRobotsTXT: true
+buildDrafts: true
+params:
+  env: production
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: false
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  profileMode:
+    enabled: True
+    title: "Lorin Urbantat"
+    subtitle: Computer-Science Student at ETH Zurich
+    imageUrl: img/avatar.jpeg
+    imageTitle: "Profile picture"
+    buttons:
+      - name: CV
+        url: other/cv.pdf
+      - name: Blog
+        url: /blog/
+
+  socialIcons:
+    - name: Github
+      url: https://github.com/bruol
+    - name: linkedin
+      url: https://www.linkedin.com/in/bruol/
+    - name: email
+      url: mailto:contact@bruol.slmail.me
+menu:
+  main:
+    - identifier: blog
+      name: Blog
+      url: /blog/

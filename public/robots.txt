@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: bruol.me/sitemap.xml
