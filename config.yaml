@@ -32,8 +32,8 @@ params:
     buttons:
       - name: CV
         url: other/cv.pdf
-      - name: Blog
-        url: /blog/
+      # - name: Blog
+      #   url: /blog/
 
   socialIcons:
     - name: Github
@@ -42,8 +42,10 @@ params:
       url: https://www.linkedin.com/in/bruol/
     - name: email
       url: mailto:contact@bruol.slmail.me
-menu:
-  main:
-    - identifier: blog
-      name: Blog
-      url: /blog/
+# menu:
+#   main:
+#     - identifier: blog
+#       name: Blog
+#       url: /blog/
+
+# Blog disabled for now
