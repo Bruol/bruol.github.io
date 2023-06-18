@@ -27,7 +27,7 @@ params:
     enabled: True
     title: "Lorin Urbantat"
     subtitle: Computer-Science Student at ETH Zurich
-    imageUrl: img/avatar1.jpeg
+    imageUrl: img/avatar_1_comp.jpeg
     imageTitle: "Profile picture"
     buttons:
       - name: CV
