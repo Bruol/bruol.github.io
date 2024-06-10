@@ -2,9 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Blog on bruol</title>
-    <link>bruol.me/blog/</link>
+    <link>http://localhost:1313/blog/</link>
     <description>Recent content in Blog on bruol</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="bruol.me/blog/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Sep 2022 15:41:46 +0200</lastBuildDate><atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World</title>
+      <link>http://localhost:1313/blog/firstpost/</link>
+      <pubDate>Fri, 23 Sep 2022 15:41:46 +0200</pubDate>
+      
+      <guid>http://localhost:1313/blog/firstpost/</guid>
+      <description>This is my first blog post on this website. </description>
+    </item>
+    
   </channel>
 </rss>
