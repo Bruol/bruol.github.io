@@ -26,7 +26,7 @@ params:
   profileMode:
     enabled: True
     title: "Lorin Urbantat"
-    subtitle: Student Assistant at ETH Game Technology Center and Computer-Science Student at ETH Zurich
+    subtitle: Software Engineer @ ETH Game Technology Center and CS Master Student at ETH Zurich
     imageUrl: img/avatar_2.png
     imageTitle: "Profile picture"
     buttons:
