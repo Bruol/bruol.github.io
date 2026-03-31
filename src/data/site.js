@@ -11,13 +11,3 @@ export const site = {
     { label: 'Email', href: 'mailto:contact@bruol.slmail.me' }
   ]
 };
-
-export const posts = [
-  {
-    title: 'Hello World',
-    slug: 'firstpost',
-    description: 'This is my first blog post on this website.',
-    pubDate: '2022-09-23',
-    readingTime: '1 min read'
-  }
-];
