@@ -1,0 +1,125 @@
+---
+import "../styles/global.css";
+
+const {
+  title = "bruol",
+  description = "Personal website of Lorin Urbantat.",
+  image = "/img/avatar.jpeg",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark bg-[rgb(29,30,32)]">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#1d1e20" />
+    <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:url" content={Astro.url} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script
+      async
+      src="https://plausible.bruol.me/js/pa-XFLQcVoF1rNECi1adH0aN.js"></script>
+    <script is:inline>
+      window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        };
+      plausible.init =
+        plausible.init ||
+        function (i) {
+          plausible.o = i || {};
+        };
+      plausible.init();
+    </script>
+    <script is:inline>
+      const root = document.documentElement;
+      const storedTheme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      if ((storedTheme || (prefersDark ? "dark" : "light")) === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body
+    class="m-0 min-h-screen bg-[rgb(255,255,255)] font-sans text-[18px] leading-normal text-[rgb(30,30,30)] dark:bg-[rgb(29,30,32)] dark:text-[rgb(218,218,219)]"
+  >
+    <div class="mx-auto flex min-h-screen w-full max-w-[1365px] flex-col px-4">
+      <header class="mx-auto w-full max-w-[1100px] pt-4">
+        <nav class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-[0.85rem]">
+            <a href="/" class="text-[2rem] font-bold">bruol</a>
+            <div
+              class="flex items-center gap-[0.65rem] text-[rgb(30,30,30)] dark:text-[rgb(218,218,219)]"
+            >
+              <button
+                class="inline-flex h-6 w-6 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-inherit"
+                type="button"
+                aria-label="Toggle theme"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  class="h-5 w-5"
+                >
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main
+        class="mx-auto flex w-full max-w-[1100px] flex-1 items-center justify-center"
+      >
+        <slot />
+      </main>
+
+      <footer
+        class="mx-auto w-full max-w-[1100px] px-0 pb-[1.35rem] text-center text-[1rem] text-[rgb(108,108,108)] dark:text-[rgb(155,156,157)]"
+      >
+        <span
+          >&copy; 2026 <a class="underline underline-offset-[0.12em]" href="/"
+            >bruol</a
+          >
+        </span>
+      </footer>
+    </div>
+
+    <script is:inline>
+      const toggle = document.querySelector("[aria-label='Toggle theme']");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          const root = document.documentElement;
+          const nextTheme = root.classList.contains("dark") ? "light" : "dark";
+          root.classList.toggle("dark", nextTheme === "dark");
+          localStorage.setItem("theme", nextTheme);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site.js";
+---
+
+<BaseLayout
+  title="bruol"
+  description={site.description}
+  image="/img/avatar.jpeg"
+>
+  <div class="flex w-full items-center justify-center">
+    <div class="-translate-y-8 flex flex-col items-center gap-[0.6rem] text-center max-md:translate-y-0">
+      <img
+        src="/img/avatar_2_comp.png"
+        alt="Profile picture"
+        class="h-[190px] w-[190px] rounded-full object-cover max-md:h-[150px] max-md:w-[150px]"
+      />
+      <h1 class="mt-[0.2rem] text-[clamp(2.4rem,4vw,3.25rem)] leading-[1.2] font-bold">{site.author}</h1>
+      <span class="max-w-[840px] text-[clamp(1rem,1.7vw,1.3rem)] text-[rgb(30,30,30)] dark:text-[rgb(218,218,219)]">
+        {site.role}
+      </span>
+
+      <div class="mt-[0.15rem] flex items-center gap-5">
+        {
+          site.socialLinks.map((link) => (
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer me"
+              title={link.label}
+              aria-label={link.label}
+              class="text-[rgb(30,30,30)] dark:text-[rgb(218,218,219)] leading-none"
+            >
+              {link.label === "GitHub" && (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-8 w-8 stroke-[1.8]"
+                >
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg>
+              )}
+              {link.label === "LinkedIn" && (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-8 w-8 stroke-[1.8]"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              )}
+              {link.label === "Email" && (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-8 w-8 stroke-[1.8]"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a2 2 0 0 1-2.06 0L2 7" />
+                </svg>
+              )}
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="mt-[0.85rem]">
+        <a
+          class="inline-flex min-h-[3.4rem] min-w-[4.3rem] items-center justify-center rounded-[12px] bg-[rgb(245,245,245)] px-4 py-[0.7rem] text-[1.15rem] text-[rgb(30,30,30)] transition-colors hover:bg-[rgb(230,230,230)] dark:bg-[rgb(56,56,61)] dark:text-[rgb(218,218,219)] dark:hover:bg-[rgb(66,66,71)]"
+          href={site.cvUrl}
+        >
+          CV
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
