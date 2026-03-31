@@ -1,8 +1,7 @@
 [build]
-  command = "hugo"
-  publish = "public"
+  command = "bun run build"
+  publish = "dist"
 
 [build.environment]
-  HUGO_VERSION = "0.124.1"
-  HUGO_EXTENDED = "true"
-  HUGO_ENV = "production"
+  NODE_VERSION = "20"
+  BUN_VERSION = "1.3.9"

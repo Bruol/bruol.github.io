@@ -1,0 +1,21 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+const pubDate = new Date(frontmatter.pubDate);
+---
+
+<BaseLayout title={`${frontmatter.title} | bruol`} description={frontmatter.description}>
+  <article class="section-card">
+    <div class="eyebrow">Journal Entry</div>
+    <h1 class="page-title" style="font-size: clamp(2.8rem, 6vw, 4.6rem); margin-top: 1rem;">
+      {frontmatter.title}
+    </h1>
+    <p class="muted">
+      <time datetime={frontmatter.pubDate}>{pubDate.toLocaleDateString('en-US', { dateStyle: 'long' })}</time>
+    </p>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
