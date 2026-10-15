@@ -35,7 +35,15 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build with Astro
-        run: bun run build
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CLOUDFLARE_PAGES_PROJECT: bruol-website
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            bun run build -- --site "https://pr-${PR_NUMBER}.${CLOUDFLARE_PAGES_PROJECT}.pages.dev"
+          else
+            bun run build
+          fi
 
       - name: Upload built site
         uses: actions/upload-artifact@v4
@@ -43,3 +51,57 @@ jobs:
           name: site
           path: dist
           if-no-files-found: error
+
+  deploy:
+    name: Deploy Cloudflare Pages
+    needs: build
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_PAGES_PROJECT: bruol-website
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.9
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in repository Actions secrets."
+            exit 1
+          fi
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            branch="pr-${PR_NUMBER}"
+            deploy_url="https://${branch}.${CLOUDFLARE_PAGES_PROJECT}.pages.dev"
+          else
+            branch="main"
+            deploy_url="https://${CLOUDFLARE_PAGES_PROJECT}.pages.dev"
+          fi
+          bunx --no-install wrangler pages deploy dist \
+            --project-name "$CLOUDFLARE_PAGES_PROJECT" \
+            --branch "$branch" \
+            --commit-hash "$GITHUB_SHA"
+          curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 5 "$deploy_url/" -o /dev/null
+          echo "Cloudflare deployment: $deploy_url" >> "$GITHUB_STEP_SUMMARY"
