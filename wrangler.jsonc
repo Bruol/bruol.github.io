@@ -1,6 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bruol-website",
-  "pages_build_output_dir": "./dist",
-  "compatibility_date": "2026-10-15"
+  "account_id": "c474444d09b3b5ffaa19446916ec2af5",
+  "compatibility_date": "2026-10-15",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
 }
