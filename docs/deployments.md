@@ -14,7 +14,7 @@ in the project's **Build & deploy → Continuous deployment** settings.
 
 `netlify.toml` defines the build command, `dist/` publish directory, runtimes,
 and frozen dependency installation. Deploy Preview and branch builds use
-`DEPLOY_PRIME_URL` as Astro's site URL so canonical and social URLs point to
+`DEPLOY_PRIME_URL` as Astro's site URL so generated social URLs point to
 that deployment. The production build uses `https://bruol.me`.
 
 For a pull request numbered N, the preview URL is
