@@ -1,0 +1,8 @@
+---
+import BrutalistHome from '../components/BrutalistHome.astro';
+export function getStaticPaths() {
+  return [1, 2, 3, 4, 5].map(variant => ({ params: { version: String(variant) }, props: { variant } }));
+}
+const { variant } = Astro.props;
+---
+<BrutalistHome variant={variant} />
