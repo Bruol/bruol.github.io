@@ -29,3 +29,8 @@ its table of contents from level-two headings. Images live in `public/projects/`
 
 See [project research notes](docs/projects-sources.md) for sources, inspected
 repository revisions, image provenance, and editorial decisions.
+
+The existing `/blog/` URL redirects to the complete project index, and
+`/blog/<project>/` links redirect to their matching `/projects/<project>/` article.
+`bun run build` verifies that every one of the 26 approved projects has an index
+link, generated article, and compatible blog URL.

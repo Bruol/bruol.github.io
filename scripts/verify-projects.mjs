@@ -13,10 +13,14 @@ const selected = [
 ];
 
 const index = await readFile(new URL('../dist/projects/index.html', import.meta.url), 'utf8');
+const blog = await readFile(new URL('../dist/blog/index.html', import.meta.url), 'utf8');
+assert(blog.includes('/projects/'), 'The existing /blog/ entry point must lead to all projects');
 for (const slug of selected) {
   assert(index.includes(`href="/projects/${slug}/"`), `Missing project index link: ${slug}`);
   const page = await readFile(new URL(`../dist/projects/${slug}/index.html`, import.meta.url), 'utf8');
   assert(page.includes('class="project-prose"'), `Missing project article: ${slug}`);
+  const legacy = await readFile(new URL(`../dist/blog/${slug}/index.html`, import.meta.url), 'utf8');
+  assert(legacy.includes(`/projects/${slug}/`), `Missing legacy blog route: ${slug}`);
   assert(!page.includes('cesbot.ces.ethz.ch'), `Private CesBot URL published in ${slug}`);
 }
 assert.equal((index.match(/data-category=/g) ?? []).length, selected.length, 'Project index must contain all 26 selected projects');
