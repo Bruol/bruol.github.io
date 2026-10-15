@@ -1,6 +1,6 @@
 ---
 title: "Flateroo"
-description: "Find a room. Meet the people you might live with."
+description: "Fewer applications. More genuine connections. A flat-sharing app with thousands of users."
 category: "Products & interfaces"
 role: "Application and backend development"
 tags: ["React Native", "Expo", "TypeScript", "PostgreSQL", "HLS", "Fly.io"]
@@ -11,7 +11,11 @@ image: "/projects/flateroo/find.jpg"
 imageAlt: "Flateroo room discovery screen"
 ---
 
-I worked on Flateroo’s React Native app, backend, and video infrastructure: room discovery, applications, and real-time flatmate chat.
+Finding a shared flat in Zurich can mean hundreds of applications before your first invitation to a casting—with ten or more people competing for the room. Rents are high, and bots can apply before you’ve finished reading the listing.
+
+Flateroo aims to change that: send a few thoughtful applications, and let flats hear from real people who want to live there.
+
+I co-built the app, which has thousands of users, working on the React Native client, backend, and custom video infrastructure. It supports video applications, video compression and streaming, and one-to-one and group chat.
 
 <div class="phone-gallery">
 <img src="/projects/flateroo/find.jpg" alt="Flateroo room discovery" loading="lazy" />
@@ -19,4 +23,4 @@ I worked on Flateroo’s React Native app, backend, and video infrastructure: ro
 <img src="/projects/flateroo/chat.jpg" alt="Flateroo group chat" loading="lazy" />
 </div>
 
-A separate service downloads uploads from S3-compatible storage, transcodes them to HLS, and uploads the playable output. PostgreSQL tracks processing and application states, so an application is sent only after its video is ready. Separating that work from the Node.js API keeps slow media jobs out of user requests.
+Video processing runs separately from the API: uploads become HLS streams, and applications are sent once their videos are ready.
