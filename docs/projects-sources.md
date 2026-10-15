@@ -53,3 +53,11 @@ All 26 entries marked `include: true` in the supplied selection are included; ex
 | `url-shortener-cf` | `f044831f45f059dba983874185d7a1d43050cfca` |
 | `wifi_thermometer` | `202cc914f554a63f7eeb39227a3db03f11f2367c` |
 | `zinkbad_calendar` | `07d8c533bbf1d94cb4e3dd974e2dea1e7466259d` |
+
+## HCI capture attempt
+
+The original Expo 49 app was installed and compiled for the web in a temporary
+checkout. Only that checkout received web dependencies and transpilation settings.
+Its historical mobile layout did not render correctly in the browser, so no
+misleading screenshots or recreated mockups were added to the post. The original
+repository remains the source for the two dashboard implementations.
