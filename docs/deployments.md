@@ -1,54 +1,57 @@
 # CI and Cloudflare deployments
 
-Astro builds a static site that Wrangler uploads to Cloudflare Workers static
-assets. `wrangler.jsonc` configures the `bruol-website` Worker, account, static
-output directory, preview URLs, and HTML 404 handling. Wrangler is pinned in
-`package.json` and `bun.lock`.
+Astro builds a static site served by the `bruol-website` Cloudflare Worker.
+`wrangler.jsonc` configures the account, `dist/` assets, previews, and HTML 404
+handling. Wrangler is pinned in `package.json` and `bun.lock`.
 
-## Credentials
+Production endpoint: https://bruol-website.cloudflare-nq3v1.workers.dev.
 
-For local deployment, run `bun install --frozen-lockfile` and `bunx wrangler login`.
-For GitHub Actions, configure repository secrets:
+## Connect Cloudflare's GitHub app
 
-- `CLOUDFLARE_ACCOUNT_ID`: the account ID from `bunx wrangler whoami`.
-- `CLOUDFLARE_API_TOKEN`: an API token with **Account → Workers Scripts → Edit**
-  permission for that account. OAuth browser login credentials are temporary and
-  are not used for CI. Keep credentials out of committed files.
+Open the Worker's **Settings → Builds → Connect** in the Cloudflare dashboard.
+Authorize the Cloudflare Workers & Pages GitHub app for `Bruol/bruol.github.io`,
+then connect that repository to the existing `bruol-website` Worker.
 
-## Local deployment
+Use these build settings:
 
-Run `bun run deploy` to build and publish production. The default endpoint is
-https://bruol-website.cloudflare-nq3v1.workers.dev.
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| Root directory | `/` (repository root) |
+| Build command | `bun install --frozen-lockfile && bun run build` |
+| Deploy command | `bunx --no-install wrangler deploy` |
+| Preview command | `bunx --no-install wrangler preview` |
+| Preview builds | Enabled |
+| Build variable `NODE_VERSION` | `22.12.0` |
+| Build variable `BUN_VERSION` | `1.3.9` |
 
-To create a preview without changing production:
+Allow Cloudflare to generate and manage its build token. GitHub Actions does not
+need `CLOUDFLARE_API_TOKEN` or `CLOUDFLARE_ACCOUNT_ID`. Cloudflare builds `main`
+for production and other branches as previews, and reports results on GitHub.
 
-```sh
-bun run build -- --site https://manual-bruol-website.cloudflare-nq3v1.workers.dev
-bunx wrangler versions upload --preview-alias manual
-```
+The GitHub app connection and build settings must be saved in Cloudflare;
+committing this repository's configuration does not establish that connection.
+After connecting, trigger a build from this PR's branch to verify previews,
+then verify the production build after merge.
 
 ## GitHub Actions
 
-The CI workflow uses Node 22.12.0 and Bun 1.3.9, installs from the frozen lockfile,
-builds Astro, and uploads `dist/` as the `site` artifact. The deployment job
-uses that artifact, uploads it with Wrangler, checks the public URL, and writes
-the URL into the run summary.
+GitHub Actions installs Node 22.12.0 and Bun 1.3.9, installs from the frozen
+lockfile, builds Astro, validates the Wrangler configuration with a dry run,
+and uploads `dist/` as the `site` artifact. This runs on PRs, pushes to `main`,
+and manual dispatch without Cloudflare credentials. Deployment belongs to
+Cloudflare Workers Builds through the GitHub app.
 
-- Pushes to `main` deploy production with `wrangler deploy`.
-- Same-repository PRs upload a version with alias `pr-N`, without promoting it
-  to production. The preview is at
-  `https://pr-N-bruol-website.cloudflare-nq3v1.workers.dev`.
-- Fork PRs run build checks without deployment credentials.
-- Manual workflow dispatch deploys production only when run on `main`.
+## Local deployment
 
-PR builds generate social URLs for their preview host. Production uses
-`https://bruol.me` as Astro's site URL. If renaming the Worker or changing the
-account's workers.dev subdomain, update `wrangler.jsonc` and the corresponding
-workflow environment values and URLs above.
+Run `bun install --frozen-lockfile`, `bunx wrangler login`, then `bun run deploy`
+to build and publish production. To build a native preview locally, run
+`bun run build && bunx wrangler preview`.
 
-## Custom domain
-
-The domain `bruol.me` continues to serve Netlify until its DNS is switched.
-After verifying the Worker, attach the domain under the Worker's **Settings →
+Production uses `https://bruol.me` as Astro's site URL. The custom domain
+continues to serve Netlify until it is attached to the Worker under **Settings →
 Domains & Routes**. The existing `netlify.toml` is retained during the cutover;
 changing the domain does not disable Netlify's GitHub integration.
+
+Cloudflare documentation: [GitHub integration](https://developers.cloudflare.com/workers/ci-cd/builds/git-integration/github-integration/)
+and [build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).
