@@ -1,6 +1,6 @@
 ---
 title: "Electomate"
-description: "Ask political questions and inspect the source material."
+description: "A voting-information app combining questionnaires with chat over party manifestos."
 category: "Applied AI"
 role: "Contributor · OpenDemocracy"
 tags: ["RAG", "Political information", "Questionnaires"]

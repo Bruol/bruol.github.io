@@ -1,6 +1,6 @@
 ---
 title: "BGP RouteViews analysis"
-description: "Finding patterns in BGP update logs."
+description: "A Python analysis of BGP announcements, withdrawals, and update bursts."
 category: "Systems & networks"
 role: "ETH Computer Networks course project"
 tags: ["Python", "BGP", "RouteViews", "YAML"]

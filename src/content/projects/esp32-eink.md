@@ -1,6 +1,6 @@
 ---
 title: "ESP32 e-ink experiments"
-description: "Bringing a four-color e-paper display to life."
+description: "An ESP32 experiment with a four-color Waveshare e-paper display."
 category: "Hardware"
 role: "Hardware experiment"
 tags: ["ESP32", "C++", "PlatformIO", "E-paper"]

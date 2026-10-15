@@ -1,6 +1,6 @@
 ---
 title: "CesBot / CeMi"
-description: "Research answers you can trace back to the page."
+description: "A research assistant for education literature, with citations linked to PDF passages."
 category: "Applied AI"
 role: "Sole engineer · ETH Chair of Education Systems"
 tags: ["Next.js", "Convex", "RAG", "Microsoft Foundry", "Python"]
@@ -15,10 +15,10 @@ I build and maintain CeMi at ETH’s Chair of Education Systems. It helps resear
 
 ![CeMi answering a research question with clickable citations](/projects/cesbot/chat.png)
 
-The pipeline: **PDF → extraction → chunks → embeddings → Chroma → cited answer**. Python workers process queued documents with Docling or PyMuPDF. Convex tracks progress and stores page numbers and text locations, so citations survive every step.
+The pipeline runs from PDF extraction through chunking, embeddings, and Chroma retrieval to a cited answer. Python workers process queued documents with Docling or PyMuPDF. Convex tracks progress and stores page numbers and text locations, so citations survive every step.
 
 Separate search tools handle concepts, exact phrases, authors, and years. Results are reranked using relevance and publication metadata, with a per-document cap to keep one paper from dominating. Next.js provides the interface; Azure / Microsoft Foundry supplies the models.
 
 ![A citation opening the source PDF with the relevant passage highlighted](/projects/cesbot/citation.png)
 
-Keeping ingestion outside chat requests makes failures easier to retry. Keeping source locations makes answers easier to check. Retrieval can still miss evidence; the viewer lets readers inspect what the answer actually used.
+Document processing runs independently of chat requests and can be retried after failures. Retained page locations let users check retrieved evidence in the PDF viewer.

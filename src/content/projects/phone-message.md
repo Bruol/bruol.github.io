@@ -1,6 +1,6 @@
 ---
 title: "Phone Message"
-description: "Dial a number. Hear a familiar voice."
+description: "An ESP32 device that plays recorded voice messages selected on a telephone keypad."
 category: "Hardware"
 role: "Personal hardware and firmware project"
 tags: ["ESP32", "C++", "I2S", "PlatformIO", "MicroSD"]
@@ -10,7 +10,7 @@ image: "/projects/phone-message/build.jpeg"
 imageAlt: "Phone Message physical keypad build"
 ---
 
-An ESP32 keypad selects voice notes from a microSD card and plays them through an I2S audio output. Numbers select long recordings; category keys play random short notes.
+The ESP32 reads keypad input, selects voice notes from a microSD card and plays them through an I2S audio output. Numbers select long recordings; category keys play random short notes.
 
 ![Phone Message keypad build](/projects/phone-message/build.jpeg)
 

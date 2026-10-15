@@ -1,6 +1,6 @@
 ---
 title: "Thinking Outside the Bias"
-description: "Does more reasoning change a language model’s bias?"
+description: "An evaluation framework for measuring bias in language-model answers and reasoning."
 category: "Applied AI"
 role: "Research project with Coralie Sage and Finn Brunke"
 tags: ["Python", "LLM evaluation", "BBQ", "StereoSet"]
@@ -15,4 +15,4 @@ With Coralie Sage and Finn Brunke, I built a Python framework that separates the
 
 ![Bias evaluation pipeline](/projects/thinking-outside-the-bias/pipeline.png)
 
-The clearest lesson: **changing the judge changed the scores—and sometimes the model rankings**. Longer observed reasoning also correlated with higher judged bias, but changing the configured thinking budget barely changed reasoning length. Neither result supports treating an LLM judge as ground truth.
+Changing the judge changed the scores and sometimes the model rankings. Longer observed reasoning also correlated with higher judged bias, but changing the configured thinking budget barely changed reasoning length. These results depend on the chosen judge and benchmark.

@@ -1,6 +1,6 @@
 ---
 title: "MQTT gas consumption counter"
-description: "Gas-meter pulses, published over MQTT."
+description: "An ESP8266 gas-meter pulse counter that publishes readings over MQTT."
 category: "Hardware"
 role: "Personal monitoring experiment"
 tags: ["ESP8266", "Arduino", "MQTT", "Pulse counting"]

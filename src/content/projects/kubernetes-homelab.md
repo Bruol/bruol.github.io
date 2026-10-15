@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes homelab"
-description: "A small k3s cluster for learning by running things."
+description: "A k3s cluster with ingress, TLS certificates, persistent storage, and home services."
 category: "Systems & networks"
 role: "Personal infrastructure project"
 tags: ["k3s", "Traefik", "MetalLB", "cert-manager", "Longhorn"]

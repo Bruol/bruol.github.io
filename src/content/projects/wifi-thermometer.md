@@ -1,6 +1,6 @@
 ---
 title: "Wi-Fi thermometer"
-description: "Read the temperature here—or over the network."
+description: "An ESP8266 thermometer with an LCD display and MQTT output."
 category: "Hardware"
 role: "Personal electronics project"
 tags: ["ESP8266", "DS18B20", "MQTT", "LCD", "Arduino"]

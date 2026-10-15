@@ -1,6 +1,6 @@
 ---
 title: "Drifa generative poster"
-description: "Shared workouts, drawn as a poster."
+description: "A p5.js poster generated from paired workout data."
 category: "Products & interfaces"
 role: "Personal creative-coding project"
 tags: ["JavaScript", "p5.js", "Data visualization", "Generative design"]

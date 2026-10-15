@@ -1,6 +1,6 @@
 ---
 title: "CEMETS app"
-description: "Conference schedules, speakers, slides, and saved events."
+description: "A conference app for schedules, speakers, slides, and saved events."
 category: "Products & interfaces"
 role: "Application development · ETH CEMETS"
 tags: ["TanStack Start", "Cloudflare Workers", "Expo", "Sanity", "Clerk"]

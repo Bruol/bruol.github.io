@@ -1,6 +1,6 @@
 ---
 title: "Japanese election data scraper"
-description: "Japanese election tables, ready for analysis."
+description: "A Python scraper for Japanese constituency-election results, exported as CSV and JSON."
 category: "Tools & automation"
 role: "Data-collection project"
 tags: ["Python", "Beautiful Soup", "CSV", "Japanese Wikipedia"]

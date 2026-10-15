@@ -1,6 +1,6 @@
 ---
 title: "Cloudflare SMTP client"
-description: "Send email directly from a Cloudflare Worker."
+description: "A TypeScript SMTP client for Cloudflare Workers."
 category: "Tools & automation"
 role: "Library author"
 tags: ["TypeScript", "Cloudflare Workers", "SMTP", "STARTTLS"]

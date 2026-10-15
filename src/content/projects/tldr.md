@@ -1,6 +1,6 @@
 ---
 title: "TLDR; Lectures"
-description: "Lecture recordings, turned into searchable summaries."
+description: "Searchable lecture transcripts and summaries, built at the VIScon hackathon."
 category: "Applied AI"
 role: "Team project · VIScon hackathon"
 tags: ["Python", "Whisper.cpp", "Django", "SQLite", "Cloudflare Workers"]

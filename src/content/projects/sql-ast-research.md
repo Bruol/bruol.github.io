@@ -1,6 +1,6 @@
 ---
 title: "SQL AST research project"
-description: "Generate SQL. Run it twice. Investigate the differences."
+description: "A schema-aware SQL generator and differential fuzzer for SQLite."
 category: "Systems & networks"
 role: "Team research project with Kenji Yuri Nakano"
 tags: ["C++20", "SQLite", "AST", "Differential testing", "gcov"]

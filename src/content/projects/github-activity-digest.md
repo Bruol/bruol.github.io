@@ -1,6 +1,6 @@
 ---
 title: "GitHub profile and activity digest"
-description: "A commit-history collector for my GitHub profile."
+description: "A GitHub API script that collects recent commits for my profile digest."
 category: "Tools & automation"
 role: "Personal automation"
 tags: ["Bun", "TypeScript", "GitHub API"]

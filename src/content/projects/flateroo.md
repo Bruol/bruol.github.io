@@ -1,6 +1,6 @@
 ---
 title: "Flateroo"
-description: "Fewer applications. More genuine connections. A flat-sharing app with thousands of users."
+description: "A flat-sharing app with thousands of users, video applications, and flatmate chat."
 category: "Products & interfaces"
 role: "Application and backend development"
 tags: ["React Native", "Expo", "TypeScript", "PostgreSQL", "HLS", "Fly.io"]

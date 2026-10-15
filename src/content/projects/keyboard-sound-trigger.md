@@ -1,6 +1,6 @@
 ---
 title: "Keyboard sound trigger"
-description: "A keyboard-sized soundboard."
+description: "A Pygame soundboard with keyboard controls and visual playback feedback."
 category: "Tools & automation"
 role: "Personal utility"
 tags: ["Python", "Pygame", "Audio"]

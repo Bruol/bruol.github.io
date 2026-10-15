@@ -1,6 +1,6 @@
 ---
 title: "HCI high-fidelity prototype"
-description: "Two ways to make daily habits easier to track."
+description: "Two habit-tracking dashboards built for an HCI course comparison."
 category: "Products & interfaces"
 role: "Collaborative HCI course prototype"
 tags: ["React Native", "Expo", "UI Kitten", "Interaction design"]

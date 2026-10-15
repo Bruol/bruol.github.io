@@ -1,6 +1,6 @@
 ---
 title: "bruol/short"
-description: "Short URLs that keep their place in the address bar."
+description: "A Cloudflare Workers URL shortener using KV storage and reverse proxying."
 category: "Tools & automation"
 role: "Personal project"
 tags: ["TypeScript", "Cloudflare Workers", "Workers KV", "Reverse proxy"]
