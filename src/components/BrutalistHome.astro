@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import avatar from '../../public/img/avatar_2_comp.png';
+import avatar from '../assets/avatar.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 const { variant = 1 } = Astro.props;
@@ -16,7 +16,7 @@ const { variant = 1 } = Astro.props;
           width={300}
           height={300}
           widths={[160, 190, 240, 300, 380, 480, 600]}
-          sizes="(max-width: 600px) 160px, 300px"
+          sizes={variant === 5 ? "(max-width: 700px) 160px, 340px" : variant === 4 ? "(max-width: 700px) 160px, 210px" : "(max-width: 700px) 160px, 190px"}
           format="webp"
           quality={80}
           loading="eager"
