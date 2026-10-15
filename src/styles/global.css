@@ -93,13 +93,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .project-role { font-size: .9rem; color: var(--project-muted); margin-top: 1.2rem; }
 .project-links { display: flex; flex-wrap: wrap; gap: .7rem 1.5rem; margin-top: 1.8rem; font-size: .9rem; }
 .project-links a { color: var(--project-accent); text-decoration: underline; text-underline-offset: .25em; }
-.project-reading-layout { display: grid; grid-template-columns: 200px minmax(0, 740px); gap: 3.5rem; align-items: start; }
-.project-toc { position: sticky; top: 2rem; font-size: .8rem; line-height: 1.5; }
-.project-toc p { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--project-muted); margin-bottom: .8rem; }
-.project-toc ul { list-style: none; padding: 0; border-left: 1px solid var(--project-line); }
-.project-toc a { display: block; padding: .35rem 0 .35rem 1rem; }
-.project-toc a:hover { color: var(--project-accent); }
-.project-prose { min-width: 0; font-size: 1.05rem; line-height: 1.85; overflow-wrap: anywhere; }
+.project-prose { min-width: 0; max-width: 740px; font-size: 1.05rem; line-height: 1.85; overflow-wrap: anywhere; }
 .project-prose > :first-child { margin-top: 0; }
 .project-prose h2 { font-size: 1.65rem; font-weight: 650; letter-spacing: -.025em; line-height: 1.35; margin: 2.8rem 0 1rem; scroll-margin-top: 2rem; }
 .project-prose h3 { font-size: 1.2rem; font-weight: 650; margin: 2rem 0 .8rem; }
@@ -122,10 +116,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .project-end { border-top: 1px solid var(--project-line); margin-top: 4rem; padding-top: 1.5rem; }
 @media (max-width: 800px) {
   .projects-page, .project-article { padding-top: 3rem; }
-  .project-reading-layout { display: flex; flex-direction: column; gap: 2rem; }
-  .project-toc { position: static; width: 100%; }
-  .project-toc ul { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; border-left: 0; }
-  .project-toc a { padding: .3rem 0; }
   .project-prose { width: 100%; }
 }
 @media (max-width: 600px) {

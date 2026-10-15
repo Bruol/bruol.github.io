@@ -8,9 +8,8 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { Content, headings } = await render(project);
+const { Content } = await render(project);
 const { title, description, category, role, period, tags, image, imageAlt, links } = project.data;
-const sections = headings.filter((heading) => heading.depth === 2);
 ---
 
 <BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
@@ -28,15 +27,7 @@ const sections = headings.filter((heading) => heading.depth === 2);
         {links.map((link) => <a href={link.url}>{link.label} <span aria-hidden="true">↗</span></a>)}
       </nav>}
     </header>
-    <div class="project-reading-layout">
-      {sections.length > 1 && <aside class="project-toc">
-        <nav aria-label="On this page">
-          <p>On this page</p>
-          <ul>{sections.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul>
-        </nav>
-      </aside>}
-      <div class="project-prose"><Content /></div>
-    </div>
+    <div class="project-prose"><Content /></div>
     <footer class="project-end"><a href="/projects/">← Explore the other projects</a></footer>
   </article>
 </BaseLayout>

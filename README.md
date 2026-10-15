@@ -24,8 +24,8 @@ The index supports client-side search and topic filtering; all posts and links
 remain available without JavaScript.
 
 Each Markdown post has a title, description, category, role, sort order, technology
-tags, optional period and index image, and resource links. The article body supplies
-its table of contents from level-two headings. Images live in `public/projects/`.
+tags, optional period and index image, and resource links. Posts keep the copy brief and link to sources for more detail. Images live in
+`public/projects/`.
 
 See [project research notes](docs/projects-sources.md) for sources, inspected
 repository revisions, image provenance, and editorial decisions.

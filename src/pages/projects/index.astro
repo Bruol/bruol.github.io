@@ -6,12 +6,12 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const categories = [...new Set(projects.map((project) => project.data.category))];
 ---
 
-<BaseLayout title="Projects | bruol" description="A working reference to my software, research, hardware, and experiments: what I built, how it works, and the decisions behind it.">
+<BaseLayout title="Projects | bruol" description="Software, research, hardware, and small things I wanted to exist.">
   <section class="projects-page">
     <header class="projects-intro">
       <p class="project-eyebrow">Software · Research · Things I wanted to exist</p>
       <h1>Projects</h1>
-      <p class="project-lede">From research tools at ETH to an event calendar for the club down the road. A reference to what I’ve built, how it works, and the decisions along the way.</p>
+      <p class="project-lede">Research tools, apps, hardware, and a calendar for the club down the road.</p>
     </header>
     <div class="project-filters" hidden>
       <label class="project-search-label">Find a project
