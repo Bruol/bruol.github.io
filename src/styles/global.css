@@ -111,6 +111,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .project-prose figcaption, .project-prose p:has(> em:only-child) { font-size: .85rem; line-height: 1.6; color: var(--project-muted); }
 .project-prose .phone-gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .75rem; }
 .project-prose .phone-gallery img { margin: 0; width: 100%; }
+.project-prose .design-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.project-prose .design-gallery a { display: block; }
+.project-prose .design-gallery img { width: 100%; height: auto; max-height: none; margin: 0; }
 .project-prose table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: .9rem; }
 .project-prose th, .project-prose td { padding: .7rem; text-align: left; border-bottom: 1px solid var(--project-line); }
 .project-end { border-top: 1px solid var(--project-line); margin-top: 4rem; padding-top: 1.5rem; }
@@ -124,5 +127,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .project-heading { margin-bottom: 2.5rem; }
   .project-prose { font-size: 1rem; }
   .project-prose .phone-gallery { gap: .4rem; }
+  .project-prose .design-gallery { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

@@ -61,3 +61,14 @@ checkout. Only that checkout received web dependencies and transpilation setting
 Its historical mobile layout did not render correctly in the browser, so no
 misleading screenshots or recreated mockups were added to the post. The original
 repository remains the source for the two dashboard implementations.
+
+## Figma design artifacts
+
+Flateroo's `Marketing` file (`6yNiHAM45VmX6cNVMAaf1t`) was inspected through
+Figma and its connected tools. The article includes two existing campaign posters:
+`187:7554` (Poster#2) and `187:7638` (Poster#1). The first was exported as PNG;
+the second used its configured PDF export. Both were converted to 1,500-pixel-high
+JPEGs for the website. The first also serves as the project's index image.
+These are existing team design artifacts, not newly generated mockups. No Figma
+canvas content was edited. Source node IDs are recorded here without exposing the
+private design file as a public resource link.
