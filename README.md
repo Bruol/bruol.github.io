@@ -14,11 +14,11 @@ Five minimal black-and-white design studies are available:
 
 | Route | Design | Palette |
 | --- | --- | --- |
-| `/1/` | Typographic poster | Black on white |
-| `/2/` | Monospace terminal | White on black |
-| `/3/` | Serif editorial | Black on white |
-| `/4/` | Split composition | White on black |
-| `/5/` | Framed index | Black on white |
+| `/1/` | Centered profile | Black on white |
+| `/2/` | Compact horizontal profile | White on black |
+| `/3/` | Bold, open layout | Black on white |
+| `/4/` | Monospace centered profile | White on black |
+| `/5/` | Photographic profile | Black on white |
 
 `/` uses the first design. Every study includes navigation to all five versions.
 Palettes are fixed, independent of system preferences or saved theme settings.

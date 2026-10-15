@@ -1,59 +1,46 @@
 ---
+import { Image } from 'astro:assets';
+import avatar from '../../public/img/avatar_2_comp.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 const { variant = 1 } = Astro.props;
-const names = ['Poster', 'Terminal', 'Editorial', 'Split', 'Index'];
-const links = [{ label: 'Curriculum vitae', href: site.cvUrl }, ...site.socialLinks, { label: 'Writing', href: '/blog/' }];
 ---
-<BaseLayout title={`${site.author} — ${names[variant - 1]} | bruol`} description={site.description} variant={variant} landing>
+<BaseLayout title={`${site.author} | bruol`} description={site.description} variant={variant} landing>
   <div class="portfolio">
-    <header class="masthead">
-      <a href="/" class="wordmark" aria-label="bruol home">bruol<span aria-hidden="true">®</span></a>
-      <span class="masthead-note">Independent mind.<br />Software engineer.</span>
-      <a class="contact-link" href={site.email}>Get in touch <span aria-hidden="true">↗</span></a>
-    </header>
+    <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
     <main id="main">
-      {variant === 1 && (
-        <section class="poster" aria-labelledby="name">
-          <div class="section-meta"><span>Personal website / Zurich, CH</span><span>01 — Introduction</span></div>
-          <h1 id="name">LORIN<br />URBANTAT<span class="name-period">.</span></h1>
-          <div class="poster-bottom"><p>I build software.<br />And keep learning.</p><div class="bio"><p>Software Engineer at the ETH Game Technology Center. Computer Science Master Student at ETH Zurich.</p><a class="text-link" href={site.cvUrl}>View curriculum vitae ↗</a></div><span class="big-arrow" aria-hidden="true">↘</span></div>
-        </section>
-      )}
-      {variant === 2 && (
-        <section class="terminal" aria-labelledby="name">
-          <p class="terminal-prompt">bruol@zurich:~$ whoami</p>
-          <h1 id="name">Lorin<br />Urbantat<span aria-hidden="true" class="cursor">_</span></h1>
-          <div class="terminal-output"><span>[01] ABOUT</span><p>Software Engineer @ ETH Game Technology Center<br />CS Master Student @ ETH Zurich</p></div>
-          <div class="terminal-output"><span>[02] LOCATION</span><p>Zurich, Switzerland</p></div>
-          <p class="terminal-prompt last-prompt">bruol@zurich:~$ ls ./links <span aria-hidden="true">↓</span></p>
-        </section>
-      )}
-      {variant === 3 && (
-        <section class="editorial" aria-labelledby="name">
-          <div class="section-meta"><span>A personal introduction</span><span>Zurich, Switzerland</span></div>
-          <p class="editorial-kicker">Software, curiosity & everything in between.</p>
-          <h1 id="name">Lorin<br /><em>Urbantat.</em></h1>
-          <div class="editorial-bottom"><span class="editorial-number" aria-hidden="true">(01)</span><p>Working at the intersection of software and play at the <strong>ETH Game Technology Center.</strong> Studying Computer Science at <strong>ETH Zurich.</strong></p><a class="editorial-cta" href={site.cvUrl}>A little more<br />about me ↗</a></div>
-        </section>
-      )}
-      {variant === 4 && (
-        <section class="split" aria-labelledby="name">
-          <div class="split-name"><span class="section-label">Engineer. Student. Human.</span><h1 id="name">LORIN<br />URBAN<br />TAT<span aria-hidden="true">↗</span></h1></div>
-          <div class="split-info"><span class="section-label">Based in Zurich, CH</span><div class="split-statement"><p>Building.<br />Playing.<br />Learning.</p><div class="split-bio">Software Engineer at the ETH Game Technology Center.<br /><br />Computer Science Master Student at ETH Zurich.</div></div><a class="split-cta" href={site.email}>Let’s talk <span aria-hidden="true">↗</span></a></div>
-        </section>
-      )}
-      {variant === 5 && (
-        <section class="index-layout" aria-labelledby="name">
-          <div class="index-title"><span class="section-label">Personal file / 001</span><h1 id="name">Lorin<br />Urbantat</h1><span class="index-symbol" aria-hidden="true">✳</span></div>
-          <dl class="index-facts"><div><dt>01 / Occupation</dt><dd>Software Engineer</dd></div><div><dt>02 / Workplace</dt><dd>ETH Game Technology Center</dd></div><div><dt>03 / Education</dt><dd>MSc Computer Science, ETH Zurich</dd></div><div><dt>04 / Location</dt><dd>Zurich, Switzerland</dd></div></dl>
-        </section>
-      )}
-      <nav class="profile-links" aria-label="Profile links">
-        {links.map((link, index) => <a href={link.href}><span class="link-index">0{index + 1}</span><span>{link.label}</span><span class="link-arrow" aria-hidden="true">↗</span></a>)}
-      </nav>
+      <section class="profile" aria-labelledby="name">
+        <Image
+          src={avatar}
+          alt="Lorin Urbantat"
+          width={300}
+          height={300}
+          widths={[160, 190, 240, 300, 380, 480, 600]}
+          sizes="(max-width: 600px) 160px, 300px"
+          format="webp"
+          quality={80}
+          loading="eager"
+          fetchpriority="high"
+          class="portrait"
+        />
+        <div class="profile-info">
+          <h1 id="name">{site.author}</h1>
+          <p class="role">{site.role}</p>
+          <nav class="social-links" aria-label="Social links">
+            {site.socialLinks.map(link => <a href={link.href} rel="me">{link.label}</a>)}
+          </nav>
+          <nav class="actions" aria-label="More about Lorin">
+            <a href={site.cvUrl}>CV</a>
+            <a href="/blog/">Projects & writing</a>
+          </nav>
+        </div>
+      </section>
     </main>
-    <footer class="portfolio-footer"><span>© 2026 Lorin Urbantat</span><span class="footer-note">Less, but intentional.</span><span>Zurich, CH ↗</span></footer>
-    <nav class="version-nav" aria-label="Design versions"><span class="version-label">Design studies</span><div>{names.map((name, index) => <a href={`/${index + 1}/`} aria-current={variant === index + 1 ? 'page' : undefined} aria-label={`Version ${index + 1}: ${name}`}><span>0{index + 1}</span><span class="version-name">{name}</span></a>)}</div><span class="version-count">0{variant} / 05</span></nav>
+    <footer class="portfolio-footer">
+      <span>© 2026 bruol</span>
+      <nav class="version-nav" aria-label="Design versions">
+        {[1, 2, 3, 4, 5].map(number => <a href={`/${number}/`} aria-current={variant === number ? 'page' : undefined} aria-label={`Version ${number}`}>{number}</a>)}
+      </nav>
+    </footer>
   </div>
 </BaseLayout>
