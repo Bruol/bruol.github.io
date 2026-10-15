@@ -48,18 +48,16 @@ Run `bun install --frozen-lockfile`, `bunx wrangler login`, then `bun run deploy
 to build and publish production. To build a native preview locally, run
 `bun run build && bunx wrangler preview`.
 
-Production uses `https://bruol.me` as Astro's site URL. `wrangler.jsonc` declares
-`bruol.me` as a Worker custom domain so deployments preserve the domain binding.
+Production is served at https://bruol.me. `wrangler.jsonc` binds `bruol.me/*`
+to `bruol-website` using a Worker route in the `bruol.me` zone. Cloudflare serves
+the Worker's static assets for all paths on that hostname. Keep the existing
+proxied DNS record so requests continue to pass through Cloudflare; the Worker
+route takes precedence over the previous Netlify origin.
 
-The initial attachment is pending removal or replacement of the existing web
-DNS record for `bruol.me`. Cloudflare returns error 100117 while that externally
-managed record exists. Wrangler OAuth does not have DNS edit permission; complete
-the domain attachment in the dashboard under **Settings → Domains & Routes**,
-or remove only the conflicting A/AAAA/CNAME record through DNS settings before
-redeploying. Leave mail and other unrelated DNS records intact.
-
-The existing `netlify.toml` is retained during the cutover; attaching the domain
-does not disable Netlify's GitHub integration.
+This is a Worker route rather than a Worker custom-domain DNS record. The
+existing DNS record prevented direct custom-domain attachment (error 100117),
+so routing avoids deleting DNS records. `netlify.toml` and Netlify's GitHub
+integration remain available, but the apex website is served by the Worker.
 
 Cloudflare documentation: [GitHub integration](https://developers.cloudflare.com/workers/ci-cd/builds/git-integration/github-integration/)
 and [build configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/).

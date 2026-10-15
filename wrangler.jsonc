@@ -11,8 +11,8 @@
   },
   "routes": [
     {
-      "pattern": "bruol.me",
-      "custom_domain": true
+      "pattern": "bruol.me/*",
+      "zone_id": "a32098730ecd5e716892b3839243292c"
     }
   ]
 }
