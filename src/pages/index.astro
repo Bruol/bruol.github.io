@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import avatar from "../assets/avatar.png";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site } from "../data/site.js";
 ---
@@ -10,9 +12,17 @@ import { site } from "../data/site.js";
 >
   <div class="flex w-full items-center justify-center">
     <div class="-translate-y-8 flex flex-col items-center gap-[0.6rem] text-center max-md:translate-y-0">
-      <img
-        src="/img/avatar_2_comp.png"
+      <Image
+        src={avatar}
         alt="Profile picture"
+        width={190}
+        height={190}
+        widths={[150, 190, 300, 380, 450, 570]}
+        sizes="(max-width: 767px) 150px, 190px"
+        format="webp"
+        quality={80}
+        loading="eager"
+        fetchpriority="high"
         class="h-[190px] w-[190px] rounded-full object-cover max-md:h-[150px] max-md:w-[150px]"
       />
       <h1 class="mt-[0.2rem] text-[clamp(2.4rem,4vw,3.25rem)] leading-[1.2] font-bold">{site.author}</h1>
