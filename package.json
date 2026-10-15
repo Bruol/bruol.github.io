@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/verify-projects.mjs",
     "preview": "astro preview",
-    "deploy": "bun run build && wrangler deploy"
+    "deploy": "bun run build && wrangler deploy",
+    "verify:projects": "node scripts/verify-projects.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
