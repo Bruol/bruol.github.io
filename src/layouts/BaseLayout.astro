@@ -6,7 +6,10 @@ import SiteHeader from "../components/SiteHeader.astro";
 const {
   title = "bruol",
   description = "Personal website of Lorin Urbantat.",
-  image = "/img/avatar.jpeg",
+  image = "/img/bruol-share.png",
+  imageAlt = "BRUOL in hot pink on white",
+  imageWidth = 1200,
+  imageHeight = 630,
   variant = 1,
   landing = false,
 } = Astro.props;
@@ -35,8 +38,13 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:image:width" content={imageWidth} />
+    <meta property="og:image:height" content={imageHeight} />
     <meta property="og:url" content={Astro.url} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <!-- Privacy-friendly analytics by Plausible -->
     <script
