@@ -14,7 +14,7 @@ const { title, description, category, role, period, tags, image, imageAlt, links
 
 <BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
   <article class="project-article">
-    <a class="project-back" href="/projects/">← All projects</a>
+    <a class="project-back" href="/#projects">← All projects</a>
     <header class="project-heading">
       {project.id === 'flateroo' && <div class="flateroo-header">
         <img src="/projects/flateroo/wordmark.png" alt="Flateroo" width="2806" height="578" fetchpriority="high" />
@@ -31,6 +31,6 @@ const { title, description, category, role, period, tags, image, imageAlt, links
       </nav>}
     </header>
     <div class="project-prose"><Content /></div>
-    <footer class="project-end"><a href="/projects/">← Explore the other projects</a></footer>
+    <footer class="project-end"><a href="/#projects">← Explore the other projects</a></footer>
   </article>
 </BaseLayout>

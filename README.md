@@ -1,36 +1,36 @@
-# bruol.me
+# Personal website
 
 Lorin Urbantat’s personal website, built with Astro and Tailwind CSS.
 
-## Development
-
 ```sh
-bun install
+bun install --frozen-lockfile
 bun run dev
-```
-
-```sh
 bun run build
-bun run preview
 ```
 
-The production site is generated into `dist/`.
+Use Node 22.12+ and Bun 1.3.9. The static build is written to `dist/`.
+
+The homepage uses Arial, with the name above the portrait and profile text beside
+it. The portrait is black and white, with color revealed around the cursor using a
+Gaussian mask (σ = 105px). Color is strongest at the cursor and decays outward;
+it fades naturally as the cursor moves past the image edges. Touch devices and
+browsers without JavaScript retain the monochrome portrait.
+
+Profile content: `src/data/site.js`. Layout: `src/components/BrutalistHome.astro`.
+Styles: `src/styles/global.css`. The ETH Zurich logo is an inline SVG in
+`src/components/EthLogo.astro`.
+
+Legacy Hugo files remain in `content/`, `layouts/`, and `static/`. Astro uses
+`src/` and `public/`.
 
 ## Projects
 
-The 26 project posts live in `src/content/projects/`. Astro validates their metadata
-through `src/content.config.ts` and generates `/projects/` and `/projects/<id>/`.
-The index supports client-side search and topic filtering; all posts and links
-remain available without JavaScript.
+All 26 selected projects live in `src/content/projects/`. The homepage continues
+into a project list in `src/components/ProjectList.astro`; rows reveal on scroll.
+All links remain available without JavaScript, with reduced motion, and by keyboard.
+Individual articles live at `/projects/<id>/`. `/projects/` and `/blog/` redirect
+to the homepage list; legacy `/blog/<id>/` routes redirect to the matching article.
 
-Each Markdown post has a title, description, category, role, sort order, technology
-tags, optional period and index image, and resource links. Posts keep the copy brief and link to sources for more detail. Images live in
-`public/projects/`.
-
-See [project research notes](docs/projects-sources.md) for sources, inspected
-repository revisions, image provenance, and editorial decisions.
-
-The existing `/blog/` URL redirects to the complete project index, and
-`/blog/<project>/` links redirect to their matching `/projects/<project>/` article.
-`bun run build` verifies that every one of the 26 approved projects has an index
-link, generated article, and compatible blog URL.
+`bun run build` checks all 26 homepage links, articles, and legacy routes.
+Images live in `public/projects/`. See [research notes](docs/projects-sources.md)
+for sources and image provenance.

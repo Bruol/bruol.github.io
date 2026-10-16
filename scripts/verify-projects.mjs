@@ -12,9 +12,11 @@ const selected = [
   'sql-ast-research', 'database-query-reduction',
 ];
 
-const index = await readFile(new URL('../dist/projects/index.html', import.meta.url), 'utf8');
+const index = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
 const blog = await readFile(new URL('../dist/blog/index.html', import.meta.url), 'utf8');
-assert(blog.includes('/projects/'), 'The existing /blog/ entry point must lead to all projects');
+assert(blog.includes('/#projects'), 'The existing /blog/ entry point must lead to all projects');
+const projectsRedirect = await readFile(new URL('../dist/projects/index.html', import.meta.url), 'utf8');
+assert(projectsRedirect.includes('/#projects'), 'The former project index must lead to the homepage list');
 for (const slug of selected) {
   assert(index.includes(`href="/projects/${slug}/"`), `Missing project index link: ${slug}`);
   const page = await readFile(new URL(`../dist/projects/${slug}/index.html`, import.meta.url), 'utf8');
