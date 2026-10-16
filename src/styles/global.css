@@ -65,7 +65,7 @@ h1 { font-size: clamp(36px, 4vw, 52px); font-weight: 750; line-height: 1.05; let
 .version-6 .portrait { width: 150px; height: 150px; }
 .version-6 .profile-info { gap: 24px; }
 .version-7 .profile { grid-template-columns: 240px minmax(0, 650px); gap: 48px; }
-.version-7 .portrait { grid-column: 1; width: 240px; height: 240px; }
+.version-7 .portrait { grid-column: 1; width: 240px; height: 240px; filter: none; }
 .version-7 .profile-info { grid-column: 2; }
 .version-7 h1 { font-size: clamp(40px, 5vw, 64px); }
 .version-7 .role { font-size: clamp(24px, 2.8vw, 34px); }
