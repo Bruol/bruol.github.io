@@ -11,7 +11,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     <ul class="project-index" id="projects" aria-label="Projects" role="list">
       {projects.map(({ id, data }) => (
         <li class:list={['project-entry', { 'project-entry-illustrated': data.icon || data.image }]} data-category={data.category} data-search={`${data.title} ${data.description} ${data.tags.join(' ')} ${data.category}`.toLowerCase()}>
-          {(data.icon || data.image) && <a class:list={['project-entry-image', { 'project-entry-icon': data.icon }]} href={`/projects/${id}/`} tabindex="-1" aria-hidden="true"><img src={data.icon || data.image} alt="" loading="lazy" width={data.icon ? 64 : 640} height={data.icon ? 64 : 360} /></a>}
+          {(data.icon || data.image) && <a class:list={['project-entry-image', { 'project-entry-icon': data.icon }]} href={`/projects/${id}/`} tabindex="-1" aria-hidden="true"><img src={data.icon || data.image} alt="" loading="lazy" height="112" /></a>}
           <div class="project-entry-copy">
             <p class="project-eyebrow">{data.category}{data.period && ` · ${data.period}`}</p>
             <h2><a href={`/projects/${id}/`}>{data.title}</a></h2>
