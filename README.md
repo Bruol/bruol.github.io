@@ -10,7 +10,7 @@ bun run build
 
 Use Node 22.12+ and Bun 1.3.9. The static build is written to `dist/`.
 
-The homepage uses Arial, with the name above the portrait and profile text beside
+The homepage uses self-hosted Inter Bold (700), with the name above the portrait and profile text beside
 it. The portrait is black and white, with color revealed around the cursor using a
 Gaussian mask (σ = 105px). Color is strongest at the cursor and decays outward;
 it fades naturally as the cursor moves past the image edges. Touch devices and

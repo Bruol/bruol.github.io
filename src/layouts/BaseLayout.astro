@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import MouseGlow from "../components/MouseGlow.astro";
 
 const {
   title = "bruol",
@@ -14,6 +15,14 @@ const {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link
+      rel="preload"
+      href="/fonts/Inter-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="high"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
@@ -47,6 +56,7 @@ const {
     </script>
   </head>
   <body class:list={[`version-${variant}`, { "content-page": !landing }]}>
+    <MouseGlow />
     <a class="skip-link" href="#main">Skip to content</a>
     {landing ? <slot /> : (
       <div class="content-shell">
