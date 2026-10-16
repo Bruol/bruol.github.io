@@ -4,8 +4,10 @@ import avatar from '../assets/avatar-new.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import { fonts } from '../data/fonts.js';
+import EthLogo from './EthLogo.astro';
 const { fontIndex = 0, grayscale = false } = Astro.props;
 const font = fonts[fontIndex];
+const [jobTitle, studyTitle] = site.role.split(' and ');
 ---
 <BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
   <div class="portfolio" style={`--profile-font: "${font.family}", Arial, sans-serif;`}>
@@ -26,7 +28,10 @@ const font = fonts[fontIndex];
           fetchpriority="high"
           class:list={["portrait", { grayscale }]}
         />
-        <p class="role">{site.role}</p>
+        <p class="role">
+          <span class="role-line">{jobTitle}</span>
+          <span class="role-line">{studyTitle.replace(/ETH Zurich$/, '')}<EthLogo /></span>
+        </p>
         <nav class="social-links" aria-label="Social links">
           {site.socialLinks.map(link => <a href={link.href} rel="me">{link.label}</a>)}
         </nav>
