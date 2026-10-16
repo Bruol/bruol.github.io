@@ -1,38 +1,20 @@
 <div class="scroll-cue">
-  <a href="#projects" class="cue-line" aria-label="Scroll to projects"><span></span></a>
-  <a href="#projects" class="cue-laser" aria-label="Scroll to projects" hidden>
+  <a href="#projects" class="cue-laser" aria-label="Scroll to projects">
     <span class="laser-content" aria-hidden="true"></span>
     <span class="laser-fallback" aria-hidden="true"></span>
     <canvas aria-hidden="true"></canvas>
   </a>
 </div>
-<nav class="cue-comparison" aria-label="Compare scroll cues" hidden>
-  <a href="?scroll-cue=line" data-cue="line">Vertical line</a>
-  <a href="?scroll-cue=laser" data-cue="laser">Pink laser</a>
-</nav>
-
 <script is:inline>
   {
-    const variant = new URLSearchParams(location.search).get('scroll-cue');
     const cue = document.querySelector('.scroll-cue');
-    if (['line', 'laser'].includes(variant)) {
-      cue.classList.add('comparing');
-      cue.classList.toggle('showing-laser', variant === 'laser');
-      for (const item of cue.children) item.hidden = !item.classList.contains(`cue-${variant}`);
-      document.querySelector('.cue-comparison').hidden = false;
-      document.querySelector(`[data-cue="${variant}"]`).setAttribute('aria-current', 'true');
-    }
-    const updateCue = () => cue.classList.toggle('scrolled', window.scrollY > 8);
-    window.addEventListener('scroll', updateCue, { passive: true });
-    window.addEventListener('pageshow', updateCue);
-    updateCue();
     const profile = document.querySelector('.opening-view .profile');
     const updateFit = () => {
       if (!profile) return;
       const contentBottom = profile.getBoundingClientRect().bottom + window.scrollY + 24;
       cue.classList.toggle('opening-fits', contentBottom <= window.innerHeight);
     };
-    // Wait for the final font metrics before showing the mobile line.
+    // Wait for the final font metrics before showing the mobile indicator.
     document.fonts.ready.then(() => {
       updateFit();
       const observer = new ResizeObserver(updateFit);
@@ -46,9 +28,8 @@
 </script>
 
 <script>
-  // Load the WebGL renderer only when comparing the laser option.
   const laser = document.querySelector<HTMLAnchorElement>('.cue-laser');
-  if (laser && !laser.hidden) {
+  if (laser) {
     const { createLaser } = await import('../scripts/vendor/laser');
     const instance = createLaser({
       source: document.createElement('canvas'),
@@ -56,11 +37,11 @@
       output: laser.querySelector<HTMLCanvasElement>('canvas')!,
     }, {
       color: [1, 20 / 255, 147 / 255],
-      offset: 80,
+      offset: 120,
       width: .85,
-      thickness: 4,
+      thickness: 6,
       core: .35,
-      radius: 12,
+      radius: 18,
       glow: 1.3,
       speed: .15,
       wave: 2,
@@ -79,60 +60,41 @@
 </script>
 
 <style>
-  .scroll-cue { margin-top: auto; padding-top: 40px; height: 88px; display: flex; align-items: end; }
-  .scroll-cue a { color: var(--link-accent); font-size: 14px; font-weight: 700; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .scroll-cue a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
-  .scroll-cue a:focus-visible { outline: 2px solid; outline-offset: 6px; }
-  .scroll-cue [hidden], .cue-comparison[hidden] { display: none; }
-  .cue-line { width: 44px; height: 64px; justify-content: center; overflow: hidden; }
-  .cue-line span { width: 9px; height: 64px; background: currentColor; will-change: opacity; animation: breathe 4.2s ease-in-out infinite; }
-  .cue-laser { position: relative; width: 480px; max-width: 100%; height: 160px; flex-shrink: 0; }
-  .scroll-cue.showing-laser { justify-content: center; height: 0; padding: 0; position: relative; }
-  .showing-laser .cue-laser { position: absolute; top: -56px; }
-  .cue-laser canvas, .laser-content { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-  .laser-fallback { position: absolute; left: 7.5%; right: 7.5%; top: 78px; height: 4px; background: currentColor; box-shadow: 0 0 12px currentColor; }
-  .laser-ready .laser-fallback { display: none; }
-  .cue-comparison { position: fixed; right: 16px; bottom: 16px; z-index: 10; display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; border: 3px solid var(--link-accent); background: white; max-width: calc(100% - 32px); font-size: 12px; }
-  .cue-comparison a { color: var(--link-accent); padding: 6px 8px; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .cue-comparison a:focus-visible { outline: 2px solid var(--link-accent); outline-offset: 2px; }
-  .cue-comparison [aria-current] { background: var(--link-accent); color: white; }
-  @media (max-width: 700px), (max-height: 600px) {
-    .scroll-cue {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9;
-      height: auto;
-      margin: 0;
-      padding: 8px 24px calc(8px + env(safe-area-inset-bottom, 0px));
-      background: white;
-    }
-    .scroll-cue.comparing { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); padding-bottom: 8px; }
-    .scroll-cue.scrolled { visibility: hidden; pointer-events: none; }
-    .scroll-cue:not(.opening-fits) a { display: none; }
-    .cue-comparison {
-      left: 12px;
-      right: 12px;
-      bottom: env(safe-area-inset-bottom, 0px);
-      max-width: none;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      padding: 6px;
-    }
-    .cue-comparison a { display: flex; align-items: center; min-height: 44px; }
-  }
-  @keyframes breathe { 0%, 100% { opacity: .8; } 50% { opacity: 1; } }
-  .scroll-cue.showing-laser {
+  .scroll-cue {
+    display: flex;
+    justify-content: center;
     position: relative;
-    inset: auto;
     margin-top: auto;
-    padding: 0;
     height: 0;
-    background: transparent;
-    visibility: visible;
-    pointer-events: auto;
   }
-  @media (prefers-reduced-motion: reduce) { .cue-line span { animation: none; } }
+  .cue-laser {
+    position: absolute;
+    top: -96px;
+    width: 720px;
+    max-width: 100%;
+    height: 240px;
+    color: var(--link-accent);
+  }
+  .cue-laser:focus-visible { outline: 2px solid; outline-offset: 6px; }
+  .cue-laser canvas, .laser-content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .laser-fallback {
+    position: absolute;
+    left: 7.5%;
+    right: 7.5%;
+    top: 117px;
+    height: 6px;
+    background: currentColor;
+    box-shadow: 0 0 18px currentColor;
+    pointer-events: none;
+  }
+  .laser-ready .laser-fallback { display: none; }
+  @media (max-width: 700px), (max-height: 600px) {
+    .scroll-cue:not(.opening-fits) a { display: none; }
+  }
 </style>
