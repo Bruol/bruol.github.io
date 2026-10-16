@@ -80,7 +80,6 @@ h1, p { margin: 0; }
 .project-entry-icon img { width: 64px; height: 64px; }
 .project-entry h2 { font-size: 1.55rem; line-height: 1.25; letter-spacing: -.025em; font-weight: 650; margin: .6rem 0 .85rem; }
 .project-entry h2 a:hover { color: #0000ff; }
-.project-entry h2 span { color: #0000ff; font-weight: 400; white-space: nowrap; }
 .project-entry-copy > p:not(.project-eyebrow) { font-size: .98rem; line-height: 1.7; }
 .project-tags { display: flex; flex-wrap: wrap; gap: .4rem .8rem; list-style: none; padding: 0; margin: 1rem 0 0; }
 .project-tags li { font-size: .73rem; color: #555; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
