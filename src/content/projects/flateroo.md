@@ -15,7 +15,7 @@ Finding a shared flat in Zurich can mean hundreds of applications before your fi
 
 Flateroo aims to change that: send a few thoughtful applications, and let flats hear from real people who want to live there.
 
-I co-built the app, which has thousands of users, working on the React Native client, backend, and custom video infrastructure. It supports video applications, video compression and streaming, and one-to-one and group chat.
+I co-built the app with [Nikolaus Brissa](https://nikolausbrissa.com/). It has thousands of users. I worked on the React Native client, backend, and custom video infrastructure, supporting video applications, compression and streaming, and one-to-one and group chat.
 
 <div class="phone-gallery">
 <img src="/projects/flateroo/find.jpg" alt="Flateroo room discovery" loading="lazy" />

@@ -9,6 +9,6 @@ links: [{"label": "Electomate project", "url": "https://opendemocracy.ai/electom
 period: "2024"
 ---
 
-I contributed to OpenDemocracy’s RAG-powered voting-information application in 2024.
+I contributed to OpenDemocracy’s RAG-powered voting-information application in 2024, alongside [Nikolaus Brissa](https://nikolausbrissa.com/), [Gabor Hollbeck](https://gaborhollbeck.com/), and [Jonathan Maillefaud](https://www.linkedin.com/in/jmaillefaud/).
 
 Electomate combines questionnaires with chat over party manifestos. Structured answers produce agreement scores; retrieved passages support explanations and follow-up questions. Keeping those two paths separate makes the matching rules and the generated answers easier to inspect.
