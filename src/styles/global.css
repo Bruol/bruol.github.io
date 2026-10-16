@@ -132,7 +132,7 @@ h1, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 /* Work continues directly from the profile, revealing one list row at a time. */
-.portfolio .profile { min-height: calc(100svh - 60px); align-content: start; }
+.portfolio .profile { align-content: start; }
 .project-index { scroll-margin-top: 32px; }
 .project-entry { padding: 36px 0 40px; transition: opacity 600ms ease, transform 600ms ease; }
 .project-entry.awaiting-reveal { opacity: 0; transform: translateY(32px); }
@@ -145,7 +145,6 @@ h1, p { margin: 0; }
 .project-prose { line-height: 1.65; }
 .project-prose img { display: block; max-width: 100%; height: auto; }
 @media (max-width: 700px) {
-  .portfolio .profile { min-height: calc(100svh - 40px); }
   .project-entry { padding: 28px 0 32px; }
   .project-entry-illustrated { gap: 16px; }
   .project-entry-image { flex-basis: 64px; height: 64px; }

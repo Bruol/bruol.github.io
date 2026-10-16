@@ -2,6 +2,12 @@
 import { getCollection } from 'astro:content';
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
+<script is:inline>
+  document.documentElement.classList.add('projects-pending');
+</script>
+<style is:global>
+  .projects-pending .project-index { visibility: hidden; }
+</style>
     <ul class="project-index" id="projects" aria-label="Projects" role="list">
       {projects.map(({ id, data }) => (
         <li class:list={['project-entry', { 'project-entry-illustrated': data.icon || data.image }]} data-category={data.category} data-search={`${data.title} ${data.description} ${data.tags.join(' ')} ${data.category}`.toLowerCase()}>
@@ -17,6 +23,29 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     </ul>
 
 <script>
+  // Reserve the opening viewport before painting projects. Keep that height
+  // fixed afterwards: mobile browser chrome must not move the list.
+  const loaded = document.readyState === 'complete'
+    ? Promise.resolve()
+    : new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+  await Promise.all([loaded, document.fonts.ready]);
+  await new Promise<void>((resolve) => {
+    let timer: ReturnType<typeof setTimeout>;
+    const settled = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        window.removeEventListener('resize', settled);
+        resolve();
+      }, 180);
+    };
+    window.addEventListener('resize', settled);
+    settled();
+  });
+  const opening = document.querySelector<HTMLElement>('.opening-view');
+  if (opening) {
+    const top = opening.getBoundingClientRect().top + window.scrollY;
+    opening.style.setProperty('--opening-height', `${Math.max(0, window.innerHeight - top)}px`);
+  }
   const entries = document.querySelectorAll<HTMLElement>('.project-entry');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!motion.matches && 'IntersectionObserver' in window) {
@@ -45,4 +74,5 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       }
     });
   }
+  document.documentElement.classList.remove('projects-pending');
 </script>
