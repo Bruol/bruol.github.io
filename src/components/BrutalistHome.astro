@@ -1,46 +1,48 @@
 ---
 import { Image } from 'astro:assets';
-import avatar from '../assets/avatar.png';
+import avatar from '../assets/avatar-new.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import { fonts } from '../data/fonts.js';
-const { fontIndex = 0 } = Astro.props;
+const { fontIndex = 0, grayscale = false } = Astro.props;
 const font = fonts[fontIndex];
 ---
-<BaseLayout title={`${site.author} | bruol`} description={site.description} variant={7} landing>
+<BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
   <div class="portfolio" style={`--profile-font: "${font.family}", Arial, sans-serif;`}>
     <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
     <main id="main">
       <section class="profile" aria-labelledby="name">
+        <h1 id="name">{site.author}</h1>
         <Image
           src={avatar}
           alt="Lorin Urbantat"
-          width={300}
-          height={300}
-          widths={[160, 190, 240, 300, 380, 480, 600]}
-          sizes="(max-width: 700px) 160px, 240px"
+          width={260}
+          height={260}
+          widths={[160, 260, 320, 520, 780]}
+          sizes="(max-width: 700px) 160px, 260px"
           format="webp"
           quality={80}
           loading="eager"
           fetchpriority="high"
-          class="portrait"
+          class:list={["portrait", { grayscale }]}
         />
-        <div class="profile-info">
-          <h1 id="name">{site.author}</h1>
-          <p class="role">{site.role}</p>
-          <nav class="social-links" aria-label="Social links">
-            {site.socialLinks.map(link => <a href={link.href} rel="me">{link.label}</a>)}
-          </nav>
-          <nav class="actions" aria-label="More about Lorin">
-            <a href={site.cvUrl}>CV</a>
-          </nav>
-        </div>
+        <p class="role">{site.role}</p>
+        <nav class="social-links" aria-label="Social links">
+          {site.socialLinks.map(link => <a href={link.href} rel="me">{link.label}</a>)}
+        </nav>
+        <nav class="actions" aria-label="More about Lorin">
+          <a href={site.cvUrl}>CV</a>
+        </nav>
       </section>
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
       <nav class="version-nav" aria-label="Font versions">
-        {fonts.map((item, index) => <a href={`/${index + 1}/`} aria-current={fontIndex === index ? 'page' : undefined} aria-label={`Font ${index + 1}: ${item.name}`}>{item.name}</a>)}
+        {fonts.map((item, index) => <a href={`/${index + 1}/${grayscale ? "bw/" : ""}`} aria-current={fontIndex === index ? 'page' : undefined} aria-label={`Font ${index + 1}: ${item.name}`}>{item.name}</a>)}
+      </nav>
+      <nav class="photo-nav" aria-label="Portrait appearance">
+        <a href={`/${fontIndex + 1}/`} aria-current={!grayscale ? 'page' : undefined}>Color</a>
+        <a href={`/${fontIndex + 1}/bw/`} aria-current={grayscale ? 'page' : undefined}>B&W</a>
       </nav>
     </footer>
   </div>
