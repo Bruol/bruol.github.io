@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar-new.jpg';
+// Sample exp(-r² / (2σ²)) every quarter sigma, with a radius of 4σ.
+const gaussianStops = Array.from({ length: 17 }, (_, index) => {
+  const radiusInSigma = index / 4;
+  const alpha = index === 16 ? 0 : Math.exp(-(radiusInSigma ** 2) / 2);
+  return `rgba(0, 0, 0, ${alpha.toFixed(5)}) ${index / 16 * 100}%`;
+}).join(', ');
+---
+<div class="portrait" data-portrait style={`--reveal-mask: radial-gradient(circle 420px at var(--reveal-x, -1000px) var(--reveal-y, -1000px), ${gaussianStops});`}>
+  {[false, true].map(color => (
+    <Image
+      src={avatar}
+      alt={color ? '' : 'Lorin Urbantat'}
+      aria-hidden={color ? 'true' : undefined}
+      width={260}
+      height={260}
+      widths={[160, 260, 320, 520, 780]}
+      sizes="(max-width: 700px) 160px, 260px"
+      format="webp"
+      quality={80}
+      loading="eager"
+      fetchpriority={color ? 'auto' : 'high'}
+      class:list={['portrait-image', { 'portrait-color': color }]}
+    />
+  ))}
+</div>
+
+<script>
+  const portrait = document.querySelector<HTMLElement>('[data-portrait]');
+  if (portrait) {
+    let cursor: { x: number; y: number } | null = null;
+    let frame = 0;
+    const radius = 420;
+    const update = () => {
+      frame = 0;
+      if (!cursor) {
+        portrait.removeAttribute('data-revealing');
+        return;
+      }
+      const bounds = portrait.getBoundingClientRect();
+      const x = cursor.x - bounds.left;
+      const y = cursor.y - bounds.top;
+      // Outside four sigma, the remaining color contribution is negligible.
+      const nearby = x >= -radius && x <= bounds.width + radius && y >= -radius && y <= bounds.height + radius;
+      if (nearby) {
+        portrait.style.setProperty('--reveal-x', `${x}px`);
+        portrait.style.setProperty('--reveal-y', `${y}px`);
+        portrait.setAttribute('data-revealing', '');
+      } else {
+        portrait.removeAttribute('data-revealing');
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const clear = () => {
+      cursor = null;
+      schedule();
+    };
+    document.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch') return clear();
+      cursor = { x: event.clientX, y: event.clientY };
+      schedule();
+    }, { passive: true });
+    document.addEventListener('pointerleave', clear);
+    window.addEventListener('blur', clear);
+    window.addEventListener('scroll', schedule, { passive: true, capture: true });
+    window.addEventListener('resize', schedule, { passive: true });
+  }
+</script>

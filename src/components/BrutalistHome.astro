@@ -1,36 +1,23 @@
 ---
-import { Image } from 'astro:assets';
 import avatar from '../assets/avatar-new.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
-import { fonts } from '../data/fonts.js';
 import EthLogo from './EthLogo.astro';
-const { fontIndex = 0, grayscale = false } = Astro.props;
-const font = fonts[fontIndex];
+import Portrait from './Portrait.astro';
 const [jobTitle, studyTitle] = site.role.split(' and ');
+const [jobRole, workplace] = jobTitle.split(' @ ');
 ---
 <BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
-  <div class="portfolio" style={`--profile-font: "${font.family}", Arial, sans-serif;`}>
+  <div class="portfolio">
     <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
     <main id="main">
       <section class="profile" aria-labelledby="name">
         <h1 id="name">{site.author}</h1>
-        <Image
-          src={avatar}
-          alt="Lorin Urbantat"
-          width={260}
-          height={260}
-          widths={[160, 260, 320, 520, 780]}
-          sizes="(max-width: 700px) 160px, 260px"
-          format="webp"
-          quality={80}
-          loading="eager"
-          fetchpriority="high"
-          class:list={["portrait", { grayscale }]}
-        />
+        <Portrait />
         <p class="role">
-          <span class="role-line">{jobTitle}</span>
-          <span class="role-line">{studyTitle.replace(/ETH Zurich$/, '')}<EthLogo /></span>
+          <span class="role-line">{studyTitle.replace(/ @ ETH Zurich$/, '')}<span class="institution"> @ <a class="eth-link" href="https://ethz.ch/en.html" aria-label="ETH Zurich"><EthLogo /></a></span></span>
+          <span class="role-line">{jobRole} @ <a href="https://ces.ethz.ch/">{workplace}</a></span>
+          <span class="role-line"><a href={site.teachingRole.href}>{site.teachingRole.title}</a><span class="institution"> @ <a class="eth-link" href="https://ethz.ch/en.html" aria-label="ETH Zurich"><EthLogo /></a></span></span>
         </p>
         <nav class="social-links" aria-label="Social links">
           {site.socialLinks.map(link => <a href={link.href} rel="me">{link.label}</a>)}
@@ -42,13 +29,6 @@ const [jobTitle, studyTitle] = site.role.split(' and ');
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
-      <nav class="version-nav" aria-label="Font versions">
-        {fonts.map((item, index) => <a href={`/${index + 1}/${grayscale ? "bw/" : ""}`} aria-current={fontIndex === index ? 'page' : undefined} aria-label={`Font ${index + 1}: ${item.name}`}>{item.name}</a>)}
-      </nav>
-      <nav class="photo-nav" aria-label="Portrait appearance">
-        <a href={`/${fontIndex + 1}/`} aria-current={!grayscale ? 'page' : undefined}>Color</a>
-        <a href={`/${fontIndex + 1}/bw/`} aria-current={grayscale ? 'page' : undefined}>B&W</a>
-      </nav>
     </footer>
   </div>
 </BaseLayout>

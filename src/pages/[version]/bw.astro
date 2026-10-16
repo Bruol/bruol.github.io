@@ -1,9 +1,0 @@
----
-import BrutalistHome from '../../components/BrutalistHome.astro';
-import { fonts } from '../../data/fonts.js';
-export function getStaticPaths() {
-  return fonts.map((_, fontIndex) => ({ params: { version: String(fontIndex + 1) }, props: { fontIndex } }));
-}
-const { fontIndex } = Astro.props;
----
-<BrutalistHome fontIndex={fontIndex} grayscale />
