@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import MouseGlow from "../components/MouseGlow.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 
 const {
   title = "bruol",
@@ -60,9 +61,9 @@ const {
     <a class="skip-link" href="#main">Skip to content</a>
     {landing ? <slot /> : (
       <div class="content-shell">
-        <header class="content-header"><a href="/" class="wordmark">bruol</a></header>
+        <SiteHeader />
         <main id="main"><slot /></main>
-        <footer class="content-footer"><a href="/">← Home</a><span>© 2026 Lorin Urbantat</span></footer>
+        <footer class="portfolio-footer"><a href="/">← Home</a><span>© 2026 bruol</span></footer>
       </div>
     )}
   </body>
