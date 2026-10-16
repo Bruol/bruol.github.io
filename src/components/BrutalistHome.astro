@@ -3,10 +3,12 @@ import { Image } from 'astro:assets';
 import avatar from '../assets/avatar.png';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
-const { variant = 1 } = Astro.props;
+import { fonts } from '../data/fonts.js';
+const { fontIndex = 0 } = Astro.props;
+const font = fonts[fontIndex];
 ---
-<BaseLayout title={`${site.author} | bruol`} description={site.description} variant={variant} landing>
-  <div class="portfolio">
+<BaseLayout title={`${site.author} | bruol`} description={site.description} variant={7} landing>
+  <div class="portfolio" style={`--profile-font: "${font.family}", Arial, sans-serif;`}>
     <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
     <main id="main">
       <section class="profile" aria-labelledby="name">
@@ -16,7 +18,7 @@ const { variant = 1 } = Astro.props;
           width={300}
           height={300}
           widths={[160, 190, 240, 300, 380, 480, 600]}
-          sizes={variant === 7 ? "(max-width: 700px) 160px, 240px" : variant === 8 ? "(max-width: 700px) 160px, 260px" : variant === 6 ? "(max-width: 700px) 160px, 150px" : variant === 5 ? "(max-width: 700px) 160px, 340px" : variant === 4 ? "(max-width: 700px) 160px, 210px" : "(max-width: 700px) 160px, 190px"}
+          sizes="(max-width: 700px) 160px, 240px"
           format="webp"
           quality={80}
           loading="eager"
@@ -37,8 +39,8 @@ const { variant = 1 } = Astro.props;
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
-      <nav class="version-nav" aria-label="Design versions">
-        {Array.from({ length: 10 }, (_, index) => index + 1).map(number => <a href={`/${number}/`} aria-current={variant === number ? 'page' : undefined} aria-label={`Version ${number}`}>{number}</a>)}
+      <nav class="version-nav" aria-label="Font versions">
+        {fonts.map((item, index) => <a href={`/${index + 1}/`} aria-current={fontIndex === index ? 'page' : undefined} aria-label={`Font ${index + 1}: ${item.name}`}>{item.name}</a>)}
       </nav>
     </footer>
   </div>

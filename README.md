@@ -10,28 +10,25 @@ bun run build
 
 Use Node 22.12+ and Bun 1.3.9. The static build is written to `dist/`.
 
-Ten minimal black-and-white design studies are available:
+Six font comparisons use the selected portrait-left layout and color photograph:
 
-| Route | Design | Palette |
-| --- | --- | --- |
-| `/1/` | Centered profile | Black on white |
-| `/2/` | Compact horizontal profile | White on black |
-| `/3/` | Bold, open layout | Black on white |
-| `/4/` | Monospace centered profile | White on black |
-| `/5/` | Photographic profile | Black on white |
-| `/6/` | Compact version of 3 | Black on white |
-| `/7/` | Portrait beside bold text | Black on white, color portrait |
-| `/8/` | Shared headline above portrait and text | Black on white |
-| `/9/` | Stacked portrait and bold text | Black on white |
-| `/10/` | Inverted version of 3 | White on black |
+| Route | Font |
+| --- | --- |
+| `/1/` | Original (Arial) |
+| `/2/` | Melloida |
+| `/3/` | Reflow Sans |
+| `/4/` | Molend |
+| `/5/` | Karia |
+| `/6/` | Science Gothic |
 
-`/` uses version 7 with the portrait in color. Every study includes navigation to all ten versions.
-Palettes are fixed, independent of system preferences or saved theme settings.
+`/` keeps the original font. All versions share content, layout, and type sizes.
+The comparison navigation uses Arial so the font names remain easy to scan.
 
-Edit profile information and destinations in `src/data/site.js`, layout markup in
-`src/components/BrutalistHome.astro`, and styles in `src/styles/global.css`.
-`src/pages/[version].astro` generates the ten routes at build time. Existing
-writing and CV URLs remain available.
+Profile content: `src/data/site.js`. Font choices: `src/data/fonts.js`.
+Layout: `src/components/BrutalistHome.astro`. Styles: `src/styles/global.css`.
+The supplied font files and accompanying license/readme files are in `public/fonts/`.
+Melloida, Reflow Sans, Molend, and Karia are personal-use fonts; Science Gothic
+uses the SIL Open Font License. The bundled files retain their original contents.
 
 Legacy Hugo files remain in `content/`, `layouts/`, and `static/`. Astro uses
 `src/` and `public/`.

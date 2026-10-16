@@ -1,8 +1,9 @@
 ---
 import BrutalistHome from '../components/BrutalistHome.astro';
+import { fonts } from '../data/fonts.js';
 export function getStaticPaths() {
-  return Array.from({ length: 10 }, (_, index) => index + 1).map(variant => ({ params: { version: String(variant) }, props: { variant } }));
+  return fonts.map((_, fontIndex) => ({ params: { version: String(fontIndex + 1) }, props: { fontIndex } }));
 }
-const { variant } = Astro.props;
+const { fontIndex } = Astro.props;
 ---
-<BrutalistHome variant={variant} />
+<BrutalistHome fontIndex={fontIndex} />
