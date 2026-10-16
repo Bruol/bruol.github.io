@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, description, category, role, period, tags, image, imageAlt, links } = project.data;
+---
+
+<BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
+  <article class="project-article">
+    <a class="project-back" href="/#projects">All projects</a>
+    <header class="project-heading">
+      {project.id === 'flateroo' && <div class="flateroo-header">
+        <img src="/projects/flateroo/wordmark.png" alt="Flateroo" width="2806" height="578" fetchpriority="high" />
+      </div>}
+      <p class="project-eyebrow">{category}{period && ` · ${period}`}</p>
+      <h1>{title}</h1>
+      <p class="project-lede">{description}</p>
+      <p class="project-role">{role}</p>
+      <ul class="project-tags" aria-label="Technologies and topics">
+        {tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+      {links.length > 0 && <nav class="project-links" aria-label="Project resources">
+        {links.map((link) => <a href={link.url}>{link.label}</a>)}
+      </nav>}
+    </header>
+    <div class="project-prose"><Content /></div>
+    <footer class="project-end"><a href="/#projects">Explore the other projects</a></footer>
+  </article>
+</BaseLayout>

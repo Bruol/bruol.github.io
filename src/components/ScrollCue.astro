@@ -1,0 +1,100 @@
+<div class="scroll-cue">
+  <a href="#projects" class="cue-laser" aria-label="Scroll to projects">
+    <span class="laser-content" aria-hidden="true"></span>
+    <span class="laser-fallback" aria-hidden="true"></span>
+    <canvas aria-hidden="true"></canvas>
+  </a>
+</div>
+<script is:inline>
+  {
+    const cue = document.querySelector('.scroll-cue');
+    const profile = document.querySelector('.opening-view .profile');
+    const updateFit = () => {
+      if (!profile) return;
+      const contentBottom = profile.getBoundingClientRect().bottom + window.scrollY + 24;
+      cue.classList.toggle('opening-fits', contentBottom <= window.innerHeight);
+    };
+    // Wait for the final font metrics before showing the mobile indicator.
+    document.fonts.ready.then(() => {
+      updateFit();
+      const observer = new ResizeObserver(updateFit);
+      observer.observe(profile);
+      const masthead = document.querySelector('.masthead');
+      if (masthead) observer.observe(masthead);
+      window.addEventListener('resize', updateFit, { passive: true });
+      window.addEventListener('pageshow', updateFit);
+    });
+  }
+</script>
+
+<script>
+  const laser = document.querySelector<HTMLAnchorElement>('.cue-laser');
+  if (laser) {
+    const { createLaser } = await import('../scripts/vendor/laser');
+    const instance = createLaser({
+      source: document.createElement('canvas'),
+      content: laser.querySelector<HTMLElement>('.laser-content')!,
+      output: laser.querySelector<HTMLCanvasElement>('canvas')!,
+    }, {
+      color: [1, 20 / 255, 147 / 255],
+      offset: 120,
+      width: .85,
+      thickness: 6,
+      core: .35,
+      radius: 18,
+      glow: 1.3,
+      speed: .15,
+      wave: 2,
+      flicker: .04,
+      reveal: 0,
+      heat: 0,
+      shimmer: 0,
+      sparkle: 0,
+      reactivity: 0,
+    });
+    if (instance) laser.classList.add('laser-ready');
+    window.addEventListener('pagehide', (event) => {
+      if (!event.persisted) instance?.destroy();
+    }, { once: true });
+  }
+</script>
+
+<style>
+  .scroll-cue {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: auto;
+    height: 0;
+  }
+  .cue-laser {
+    position: absolute;
+    top: -96px;
+    width: 720px;
+    max-width: 100%;
+    height: 240px;
+    color: var(--link-accent);
+  }
+  .cue-laser:focus-visible { outline: 2px solid; outline-offset: 6px; }
+  .cue-laser canvas, .laser-content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .laser-fallback {
+    position: absolute;
+    left: 7.5%;
+    right: 7.5%;
+    top: 117px;
+    height: 6px;
+    background: currentColor;
+    box-shadow: 0 0 18px currentColor;
+    pointer-events: none;
+  }
+  .laser-ready .laser-fallback { display: none; }
+  @media (max-width: 700px), (max-height: 600px) {
+    .scroll-cue:not(.opening-fits) a { display: none; }
+  }
+</style>

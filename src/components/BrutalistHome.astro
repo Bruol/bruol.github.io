@@ -4,15 +4,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import EthLogo from './EthLogo.astro';
 import Portrait from './Portrait.astro';
+import ProjectList from './ProjectList.astro';
+import ScrollCue from './ScrollCue.astro';
+import SiteHeader from './SiteHeader.astro';
 const [jobTitle, studyTitle] = site.role.split(' and ');
 const [jobRole, workplace] = jobTitle.split(' @ ');
 ---
 <BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
   <div class="portfolio">
-    <header class="masthead">
-      <span class="wordmark" data-wordmark>BRUOL</span>
-    </header>
+    <SiteHeader />
     <main id="main">
+      <div class="opening-view">
       <section class="profile" aria-labelledby="name">
         <h1 id="name" data-name-style="italic">{site.author}</h1>
         <Portrait />
@@ -28,6 +30,9 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
           <a href={site.cvUrl}>CV</a>
         </nav>
       </section>
+      <ScrollCue />
+      </div>
+      <ProjectList />
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
@@ -36,15 +41,15 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
 </BaseLayout>
 
 <style>
-  .masthead {
-    container-type: inline-size;
+  .opening-view {
+    min-height: var(--opening-height, calc(100svh - 129px));
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-bottom: 0;
-    border-bottom: none;
+    flex-direction: column;
+    padding-bottom: 24px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 700px) {
+    .opening-view { min-height: var(--opening-height, calc(100svh - 109px)); }
   }
   .portfolio main {
     padding-top: 0;
@@ -53,11 +58,5 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
   .profile h1[data-name-style="italic"] {
     font-style: italic;
     font-synthesis: style;
-  }
-  .wordmark {
-    font-size: min(200px, 26cqw);
-    white-space: nowrap;
-    max-width: 100%;
-    color: var(--link-accent);
   }
 </style>

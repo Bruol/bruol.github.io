@@ -2,7 +2,8 @@
 
 Astro builds a static site served by the `bruol-website` Cloudflare Worker.
 `wrangler.jsonc` configures the account, `dist/` assets, previews, and HTML 404
-handling. Wrangler is pinned in `package.json` and `bun.lock`.
+handling. The `previews` block enables the native `wrangler preview` command;
+`preview_urls` alone only enables version preview URLs. Wrangler is pinned in `package.json` and `bun.lock`.
 
 Production endpoint: https://bruol-website.cloudflare-nq3v1.workers.dev.
 
