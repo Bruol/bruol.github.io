@@ -23,6 +23,22 @@
     window.addEventListener('scroll', updateCue, { passive: true });
     window.addEventListener('pageshow', updateCue);
     updateCue();
+    const profile = document.querySelector('.opening-view .profile');
+    const updateFit = () => {
+      if (!profile) return;
+      const contentBottom = profile.getBoundingClientRect().bottom + window.scrollY + 24;
+      cue.classList.toggle('opening-fits', contentBottom <= window.innerHeight);
+    };
+    // Wait for the final font metrics before showing the mobile line.
+    document.fonts.ready.then(() => {
+      updateFit();
+      const observer = new ResizeObserver(updateFit);
+      observer.observe(profile);
+      const masthead = document.querySelector('.masthead');
+      if (masthead) observer.observe(masthead);
+      window.addEventListener('resize', updateFit, { passive: true });
+      window.addEventListener('pageshow', updateFit);
+    });
   }
 </script>
 
@@ -32,8 +48,8 @@
   .scroll-cue a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
   .scroll-cue a:focus-visible { outline: 2px solid; outline-offset: 6px; }
   .scroll-cue [hidden], .cue-comparison[hidden] { display: none; }
-  .cue-line { width: 44px; height: 48px; justify-content: center; overflow: hidden; }
-  .cue-line span { width: 3px; height: 48px; background: currentColor; transform-origin: top; animation: breathe 2.8s ease-in-out infinite; }
+  .cue-line { width: 44px; height: 64px; justify-content: center; overflow: hidden; }
+  .cue-line span { width: 9px; height: 64px; background: currentColor; transform-origin: top; animation: breathe 4.2s ease-in-out infinite; }
   .cue-comparison { position: fixed; right: 16px; bottom: 16px; z-index: 10; display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; border: 3px solid var(--link-accent); background: white; max-width: calc(100% - 32px); font-size: 12px; }
   .cue-comparison a { color: var(--link-accent); padding: 6px 8px; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .cue-comparison a:focus-visible { outline: 2px solid var(--link-accent); outline-offset: 2px; }
@@ -52,6 +68,7 @@
     }
     .scroll-cue.comparing { bottom: calc(76px + env(safe-area-inset-bottom, 0px)); padding-bottom: 8px; }
     .scroll-cue.scrolled { visibility: hidden; pointer-events: none; }
+    .scroll-cue:not(.opening-fits) .cue-line { display: none; }
     .cue-comparison {
       left: 12px;
       right: 12px;
@@ -64,6 +81,6 @@
     }
     .cue-comparison a { display: flex; align-items: center; min-height: 44px; }
   }
-  @keyframes breathe { 0%, 100% { transform: scaleY(.65); opacity: .4; } 50% { transform: scaleY(1); opacity: 1; } }
+  @keyframes breathe { 0%, 100% { transform: scaleY(.9); opacity: .8; } 50% { transform: scaleY(1); opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .cue-line span { animation: none; } }
 </style>
