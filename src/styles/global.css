@@ -77,10 +77,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .project-filters select option { background: var(--project-surface); }
 .project-count { color: var(--project-muted); font-size: .8rem; margin: 1.2rem 0; }
-.project-index { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2.5rem; }
+.project-index { list-style: none; padding: 0; margin: 0; }
 .project-entry { border-top: 1px solid var(--project-line); padding: 1.8rem 0 2rem; min-width: 0; }
-.project-entry-image { display: block; margin-bottom: 1.4rem; border-radius: 8px; overflow: hidden; background: var(--project-surface); }
-.project-entry-image img { width: 100%; height: 260px; object-fit: contain; }
+.project-entry-illustrated { display: flex; align-items: flex-start; gap: 1.8rem; }
+.project-entry-copy { flex: 1; min-width: 0; }
+.project-entry-image { display: flex; align-items: center; justify-content: center; flex: 0 0 144px; height: 112px; border-radius: 8px; overflow: hidden; background: var(--project-surface); }
+.project-entry-image img { width: 100%; height: 100%; object-fit: contain; }
+.project-entry-icon { background: transparent; }
+.project-entry-icon img { width: 64px; height: 64px; }
 .project-entry h2 { font-size: 1.55rem; line-height: 1.25; letter-spacing: -.025em; font-weight: 650; margin: .6rem 0 .85rem; }
 .project-entry h2 a:hover { color: var(--project-accent); }
 .project-entry h2 span { color: var(--project-accent); font-weight: 400; white-space: nowrap; }
@@ -124,8 +128,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .project-prose { width: 100%; }
 }
 @media (max-width: 600px) {
-  .project-index, .project-filters { grid-template-columns: 1fr; }
-  .project-entry-image img { height: 220px; }
+  .project-filters { grid-template-columns: 1fr; }
+  .project-entry-illustrated { gap: 1rem; }
+  .project-entry-image { flex-basis: 72px; height: 72px; }
+  .project-entry h2 { font-size: 1.3rem; }
   .project-heading { margin-bottom: 2.5rem; }
   .project-prose { font-size: 1rem; }
   .project-prose .phone-gallery { gap: .4rem; }

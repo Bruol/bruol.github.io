@@ -8,6 +8,7 @@ order: 1
 links: []
 period: "2025–present"
 image: "/projects/cesbot/chat.png"
+icon: "/projects/cesbot/icon.png"
 imageAlt: "CeMi research chat with source citations"
 ---
 
