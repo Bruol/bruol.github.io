@@ -1,5 +1,4 @@
 ---
-import avatar from '../assets/avatar-new.jpg';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import EthLogo from './EthLogo.astro';
@@ -10,7 +9,7 @@ import SiteHeader from './SiteHeader.astro';
 const [jobTitle, studyTitle] = site.role.split(' and ');
 const [jobRole, workplace] = jobTitle.split(' @ ');
 ---
-<BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
+<BaseLayout title={`${site.author} | bruol`} description={site.description} variant={8} landing>
   <div class="portfolio">
     <SiteHeader />
     <main id="main">
