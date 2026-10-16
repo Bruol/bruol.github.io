@@ -55,7 +55,7 @@ h1, p { margin: 0; }
   .portrait { width: 160px; height: 160px; }
   .profile h1 { font-size: 60px; padding-bottom: 0; }
   .social-links { padding: 0; }
-  .role { font-size: 48px; }
+  .role { font-size: 36px; }
   .content-shell { padding: 0 24px; }
 }
 @media (max-width: 380px) {
