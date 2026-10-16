@@ -72,3 +72,7 @@ JPEGs for the website. The first also serves as the project's index image.
 These are existing team design artifacts, not newly generated mockups. No Figma
 canvas content was edited. Source node IDs are recorded here without exposing the
 private design file as a public resource link.
+# Additional Flateroo assets
+
+User-provided Flateroo wordmark, purple background, and framed campaign poster photograph are stored in `public/projects/flateroo/`. The wordmark and background form the article header; the photograph appears in the article and project index.
+

@@ -7,8 +7,8 @@ tags: ["React Native", "Expo", "TypeScript", "PostgreSQL", "HLS", "Fly.io"]
 order: 2
 links: [{"label": "Flateroo", "url": "https://flateroo.com/"}]
 period: "2024–2025"
-image: "/projects/flateroo/brand-poster.jpg"
-imageAlt: "Flateroo campaign poster with bold typography and purple and mint accents"
+image: "/projects/flateroo/poster-photo.webp"
+imageAlt: "Framed Flateroo Flat Mate Zürich poster against a concrete wall"
 ---
 
 Finding a shared flat in Zurich can mean hundreds of applications before your first invitation to a casting—with ten or more people competing for the room. Rents are high, and bots can apply before you’ve finished reading the listing.
@@ -24,6 +24,10 @@ I co-built the app, which has thousands of users, working on the React Native cl
 </div>
 
 Video processing runs separately from the API: uploads become HLS streams, and applications are sent once their videos are ready.
+
+<figure>
+<a href="/projects/flateroo/poster-photo.webp"><img src="/projects/flateroo/poster-photo.webp" alt="Framed Flat Mate Zürich poster with lime and pink typography against a concrete wall" width="1366" height="2048" loading="lazy" /></a>
+</figure>
 
 <figure>
 <div class="design-gallery">

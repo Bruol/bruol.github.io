@@ -16,6 +16,9 @@ const { title, description, category, role, period, tags, image, imageAlt, links
   <article class="project-article">
     <a class="project-back" href="/projects/">← All projects</a>
     <header class="project-heading">
+      {project.id === 'flateroo' && <div class="flateroo-header">
+        <img src="/projects/flateroo/wordmark.png" alt="Flateroo" width="2806" height="578" fetchpriority="high" />
+      </div>}
       <p class="project-eyebrow">{category}{period && ` · ${period}`}</p>
       <h1>{title}</h1>
       <p class="project-lede">{description}</p>
