@@ -9,10 +9,12 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
 ---
 <BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
   <div class="portfolio">
-    <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
+    <header class="masthead">
+      <span class="wordmark" data-wordmark>BRUOL</span>
+    </header>
     <main id="main">
       <section class="profile" aria-labelledby="name">
-        <h1 id="name">{site.author}</h1>
+        <h1 id="name" data-name-style="italic">{site.author}</h1>
         <Portrait />
         <p class="role">
           <span class="role-line">{studyTitle.replace(/ @ ETH Zurich$/, '')}<span class="institution"> @ <a class="eth-link" href="https://ethz.ch/en.html" aria-label="ETH Zurich"><EthLogo /></a></span></span>
@@ -32,3 +34,30 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
     </footer>
   </div>
 </BaseLayout>
+
+<style>
+  .masthead {
+    container-type: inline-size;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .portfolio main {
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .profile h1[data-name-style="italic"] {
+    font-style: italic;
+    font-synthesis: style;
+  }
+  .wordmark {
+    font-size: min(200px, 26cqw);
+    white-space: nowrap;
+    max-width: 100%;
+    color: var(--link-accent);
+  }
+</style>

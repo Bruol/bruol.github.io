@@ -1,0 +1,81 @@
+<div class="mouse-glow" data-mouse-glow aria-hidden="true"></div>
+
+<script>
+  const glow = document.querySelector<HTMLElement>('[data-mouse-glow]');
+  if (glow) {
+    const enabled = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    let hasPointer = false;
+    let bounce: Animation | undefined;
+    const settings = { x: -18, y: -18, size: 36 };
+    const update = () => {
+      frame = 0;
+      glow.style.width = `${settings.size}px`;
+      glow.style.height = `${settings.size}px`;
+      glow.style.transform = `translate3d(${x + settings.x - settings.size / 2}px, ${y + settings.y - settings.size / 2}px, 0)`;
+      if (hasPointer && enabled.matches) glow.setAttribute('data-visible', '');
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const hide = () => {
+      bounce?.cancel();
+      cancelAnimationFrame(frame);
+      frame = 0;
+      hasPointer = false;
+      glow.removeAttribute('data-visible');
+    };
+    document.addEventListener('pointermove', event => {
+      if (!enabled.matches || event.pointerType === 'touch') return hide();
+      x = event.clientX;
+      y = event.clientY;
+      hasPointer = true;
+      schedule();
+    }, { passive: true });
+    document.addEventListener('pointerdown', event => {
+      if (!enabled.matches || event.pointerType === 'touch') return;
+      x = event.clientX;
+      y = event.clientY;
+      hasPointer = true;
+      schedule();
+      // Keep the bounce independent of the pointer-position transform.
+      // Scaling this element also scales its translation, causing sideways jumps.
+      const currentTranslate = getComputedStyle(glow).translate;
+      bounce?.cancel();
+      const rise = 'cubic-bezier(0.33, 0.67, 0.67, 1)';
+      const fall = 'cubic-bezier(0.33, 0, 0.67, 0.33)';
+      bounce = glow.animate([
+        { translate: currentTranslate === 'none' ? '0px 0px' : currentTranslate, offset: 0, easing: rise },
+        { translate: '0px -36px', offset: 0.28, easing: fall },
+        { translate: '0px 0px', offset: 0.56, easing: rise },
+        { translate: '0px -10px', offset: 0.70, easing: fall },
+        { translate: '0px 0px', offset: 0.84, easing: rise },
+        { translate: '0px -3px', offset: 0.92, easing: fall },
+        { translate: '0px 0px', offset: 1 },
+      ], { duration: 650 });
+    }, { passive: true });
+    document.addEventListener('pointerleave', hide);
+    window.addEventListener('blur', hide);
+    enabled.addEventListener('change', hide);
+  }
+</script>
+
+<style>
+  .mouse-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--link-accent);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+  }
+  .mouse-glow[data-visible] { opacity: 1; }
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .mouse-glow { display: none; }
+  }
+</style>
