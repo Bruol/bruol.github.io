@@ -16,7 +16,7 @@ const { variant = 1 } = Astro.props;
           width={300}
           height={300}
           widths={[160, 190, 240, 300, 380, 480, 600]}
-          sizes={variant === 5 ? "(max-width: 700px) 160px, 340px" : variant === 4 ? "(max-width: 700px) 160px, 210px" : "(max-width: 700px) 160px, 190px"}
+          sizes={variant === 7 ? "(max-width: 700px) 160px, 240px" : variant === 8 ? "(max-width: 700px) 160px, 260px" : variant === 6 ? "(max-width: 700px) 160px, 150px" : variant === 5 ? "(max-width: 700px) 160px, 340px" : variant === 4 ? "(max-width: 700px) 160px, 210px" : "(max-width: 700px) 160px, 190px"}
           format="webp"
           quality={80}
           loading="eager"
@@ -31,7 +31,6 @@ const { variant = 1 } = Astro.props;
           </nav>
           <nav class="actions" aria-label="More about Lorin">
             <a href={site.cvUrl}>CV</a>
-            <a href="/blog/">Projects & writing</a>
           </nav>
         </div>
       </section>
@@ -39,7 +38,7 @@ const { variant = 1 } = Astro.props;
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
       <nav class="version-nav" aria-label="Design versions">
-        {[1, 2, 3, 4, 5].map(number => <a href={`/${number}/`} aria-current={variant === number ? 'page' : undefined} aria-label={`Version ${number}`}>{number}</a>)}
+        {Array.from({ length: 10 }, (_, index) => index + 1).map(number => <a href={`/${number}/`} aria-current={variant === number ? 'page' : undefined} aria-label={`Version ${number}`}>{number}</a>)}
       </nav>
     </footer>
   </div>

@@ -17,7 +17,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content={variant === 2 || variant === 4 ? "#000000" : "#ffffff"} />
+    <meta name="theme-color" content={[2, 4, 10].includes(variant) ? "#000000" : "#ffffff"} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
 
@@ -50,7 +50,7 @@ const {
     <a class="skip-link" href="#main">Skip to content</a>
     {landing ? <slot /> : (
       <div class="content-shell">
-        <header class="content-header"><a href="/" class="wordmark">bruol</a><a href="/blog/">Writing ↗</a></header>
+        <header class="content-header"><a href="/" class="wordmark">bruol</a></header>
         <main id="main"><slot /></main>
         <footer class="content-footer"><a href="/">← Home</a><span>© 2026 Lorin Urbantat</span></footer>
       </div>
