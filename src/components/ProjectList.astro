@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<script is:inline>
+  document.documentElement.classList.add('projects-pending');
+</script>
+<style is:global>
+  .projects-pending .project-index { visibility: hidden; }
+</style>
+    <ul class="project-index" id="projects" aria-label="Projects" role="list">
+      {projects.map(({ id, data }) => (
+        <li class:list={['project-entry', { 'project-entry-illustrated': data.icon || data.image }]} data-category={data.category} data-search={`${data.title} ${data.description} ${data.tags.join(' ')} ${data.category}`.toLowerCase()}>
+          {(data.icon || data.image) && <a class:list={['project-entry-image', { 'project-entry-icon': data.icon }]} href={`/projects/${id}/`} tabindex="-1" aria-hidden="true"><img src={data.icon || data.image} alt="" loading="lazy" height="112" /></a>}
+          <div class="project-entry-copy">
+            <p class="project-eyebrow">{data.category}{data.period && ` · ${data.period}`}</p>
+            <h2><a href={`/projects/${id}/`}>{data.title}</a></h2>
+            <p>{data.description}</p>
+            <ul class="project-tags" aria-label="Technologies and topics">{data.tags.map((tag) => <li>{tag}</li>)}</ul>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+<script>
+  const thumbnails = document.querySelectorAll<HTMLElement>('.project-entry-image');
+  const mobile = window.matchMedia('(max-width: 700px), (hover: none)');
+  let colorFrame = 0;
+  const updateColors = () => {
+    colorFrame = 0;
+    for (const thumbnail of thumbnails) {
+      if (!mobile.matches) {
+        thumbnail.style.removeProperty('--project-grayscale');
+        continue;
+      }
+      const bounds = thumbnail.getBoundingClientRect();
+      // Full color in the top quarter; grayscale in the bottom quarter.
+      const center = bounds.top + bounds.height / 2;
+      const grayscale = Math.max(0, Math.min(1,
+        (center / window.innerHeight - 0.25) / 0.5));
+      thumbnail.style.setProperty('--project-grayscale', String(grayscale));
+    }
+  };
+  const scheduleColors = () => {
+    if (!colorFrame) colorFrame = requestAnimationFrame(updateColors);
+  };
+  window.addEventListener('scroll', scheduleColors, { passive: true });
+  window.addEventListener('resize', scheduleColors, { passive: true });
+  window.addEventListener('pageshow', scheduleColors);
+  mobile.addEventListener('change', scheduleColors);
+  scheduleColors();
+
+  // Reserve the opening viewport before painting projects. Keep that height
+  // fixed afterwards: mobile browser chrome must not move the list.
+  const loaded = document.readyState === 'complete'
+    ? Promise.resolve()
+    : new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+  await Promise.all([loaded, document.fonts.ready]);
+  await new Promise<void>((resolve) => {
+    let timer: ReturnType<typeof setTimeout>;
+    const settled = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        window.removeEventListener('resize', settled);
+        resolve();
+      }, 180);
+    };
+    window.addEventListener('resize', settled);
+    settled();
+  });
+  const opening = document.querySelector<HTMLElement>('.opening-view');
+  if (opening) {
+    const top = opening.getBoundingClientRect().top + window.scrollY;
+    opening.style.setProperty('--opening-height', `${Math.max(0, window.innerHeight - top)}px`);
+  }
+  const entries = document.querySelectorAll<HTMLElement>('.project-entry');
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!motion.matches && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((changes) => {
+      for (const change of changes) {
+        if (change.isIntersecting) {
+          change.target.classList.remove('awaiting-reveal');
+          observer.unobserve(change.target);
+        }
+      }
+    }, { threshold: 0.08 });
+    for (const entry of entries) {
+      if (entry.getBoundingClientRect().top >= window.innerHeight) {
+        entry.classList.add('awaiting-reveal');
+        observer.observe(entry);
+      }
+      entry.addEventListener('focusin', () => {
+        entry.classList.remove('awaiting-reveal');
+        observer.unobserve(entry);
+      });
+    }
+    motion.addEventListener('change', () => {
+      if (motion.matches) {
+        entries.forEach((entry) => entry.classList.remove('awaiting-reveal'));
+        observer.disconnect();
+      }
+    });
+  }
+  document.documentElement.classList.remove('projects-pending');
+  scheduleColors();
+</script>

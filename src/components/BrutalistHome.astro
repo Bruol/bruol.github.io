@@ -4,15 +4,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import EthLogo from './EthLogo.astro';
 import Portrait from './Portrait.astro';
+import ProjectList from './ProjectList.astro';
+import ScrollCue from './ScrollCue.astro';
+import SiteHeader from './SiteHeader.astro';
 const [jobTitle, studyTitle] = site.role.split(' and ');
 const [jobRole, workplace] = jobTitle.split(' @ ');
 ---
 <BaseLayout title={`${site.author} | bruol`} description={site.description} image={avatar.src} variant={8} landing>
   <div class="portfolio">
-    <header class="masthead"><a href="/" class="wordmark">bruol</a></header>
+    <SiteHeader />
     <main id="main">
+      <div class="opening-view">
       <section class="profile" aria-labelledby="name">
-        <h1 id="name">{site.author}</h1>
+        <h1 id="name" data-name-style="italic">{site.author}</h1>
         <Portrait />
         <p class="role">
           <span class="role-line">{studyTitle.replace(/ @ ETH Zurich$/, '')}<span class="institution"> @ <a class="eth-link" href="https://ethz.ch/en.html" aria-label="ETH Zurich"><EthLogo /></a></span></span>
@@ -26,9 +30,33 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
           <a href={site.cvUrl}>CV</a>
         </nav>
       </section>
+      <ScrollCue />
+      </div>
+      <ProjectList />
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
     </footer>
   </div>
 </BaseLayout>
+
+<style>
+  .opening-view {
+    min-height: var(--opening-height, calc(100svh - 129px));
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 700px) {
+    .opening-view { min-height: var(--opening-height, calc(100svh - 109px)); }
+  }
+  .portfolio main {
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .profile h1[data-name-style="italic"] {
+    font-style: italic;
+    font-synthesis: style;
+  }
+</style>

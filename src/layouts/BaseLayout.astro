@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import MouseGlow from "../components/MouseGlow.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 
 const {
   title = "bruol",
@@ -14,12 +16,19 @@ const {
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link
+      rel="preload"
+      href="/fonts/Inter-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="high"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content={[2, 4, 10].includes(variant) ? "#000000" : "#ffffff"} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href="/fonts/Inter-Variable.ttf" as="font" type="font/ttf" crossorigin />
     <title>{title}</title>
 
     <meta property="og:title" content={title} />
@@ -48,12 +57,13 @@ const {
     </script>
   </head>
   <body class:list={[`version-${variant}`, { "content-page": !landing }]}>
+    <MouseGlow />
     <a class="skip-link" href="#main">Skip to content</a>
     {landing ? <slot /> : (
       <div class="content-shell">
-        <header class="content-header"><a href="/" class="wordmark">bruol</a></header>
+        <SiteHeader />
         <main id="main"><slot /></main>
-        <footer class="content-footer"><a href="/">← Home</a><span>© 2026 Lorin Urbantat</span></footer>
+        <footer class="portfolio-footer"><a href="/">← Home</a><span>© 2026 bruol</span></footer>
       </div>
     )}
   </body>
