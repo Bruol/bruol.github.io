@@ -1,0 +1,40 @@
+.laser-dev-controls {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  width: min(320px, calc(100vw - 32px));
+  border: 1px solid #61616e;
+  border-radius: 10px;
+  background: #14141cf5;
+  color: #f5f5fa;
+  box-shadow: 0 8px 32px #0005;
+  font: 13px/1.4 system-ui, sans-serif;
+  color-scheme: dark;
+}
+.laser-dev-controls summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 650;
+}
+.laser-dev-body {
+  max-height: min(65dvh, 600px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 16px 12px;
+}
+.laser-dev-body p { margin: 0 0 12px; color: #bdbdcf; font-size: 12px; }
+.laser-dev-body label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 12px 0;
+}
+.laser-dev-body output { font-variant-numeric: tabular-nums; color: #ff78c5; }
+.laser-dev-body input[type='range'] { grid-column: 1 / -1; width: 100%; margin: 0; accent-color: #ff1493; }
+.laser-dev-body input[type='color'] { width: 44px; height: 28px; padding: 0; }
+.laser-dev-actions { display: flex; gap: 8px; margin: 16px 0 8px; }
+.laser-dev-actions button { border: 1px solid #61616e; border-radius: 5px; padding: 8px; background: #282834; color: inherit; font: inherit; cursor: pointer; }
+.laser-dev-controls :focus-visible { outline: 2px solid #ff78c5; outline-offset: 3px; }
+.laser-dev-body textarea { display: block; width: 100%; height: 120px; margin-top: 8px; }

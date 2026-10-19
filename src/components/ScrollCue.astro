@@ -28,6 +28,8 @@
 </script>
 
 <script>
+  import { laserSettings } from '../scripts/laser-settings';
+
   const laser = document.querySelector<HTMLAnchorElement>('.cue-laser');
   if (laser) {
     const { createLaser } = await import('../scripts/vendor/laser');
@@ -35,26 +37,21 @@
       source: document.createElement('canvas'),
       content: laser.querySelector<HTMLElement>('.laser-content')!,
       output: laser.querySelector<HTMLCanvasElement>('canvas')!,
-    }, {
-      color: [1, 20 / 255, 147 / 255],
-      offset: 120,
-      width: .85,
-      thickness: 6,
-      core: .35,
-      radius: 18,
-      glow: 1.3,
-      speed: .15,
-      wave: 2,
-      flicker: .04,
-      reveal: 0,
-      heat: 0,
-      shimmer: 0,
-      sparkle: 0,
-      reactivity: 0,
-    });
-    if (instance) laser.classList.add('laser-ready');
+      anchor: laser,
+    }, laserSettings);
+    let cleanupControls: (() => void) | undefined;
+    if (instance) {
+      laser.classList.add('laser-ready');
+      if (import.meta.env.DEV) {
+        const { mountLaserControls } = await import('../scripts/laser-controls');
+        cleanupControls = mountLaserControls(instance);
+      }
+    }
     window.addEventListener('pagehide', (event) => {
-      if (!event.persisted) instance?.destroy();
+      if (!event.persisted) {
+        cleanupControls?.();
+        instance?.destroy();
+      }
     }, { once: true });
   }
 </script>
@@ -70,27 +67,35 @@
   .cue-laser {
     position: absolute;
     top: -96px;
-    width: 720px;
+    width: 800px;
     max-width: 100%;
     height: 240px;
     color: var(--link-accent);
   }
   .cue-laser:focus-visible { outline: 2px solid; outline-offset: 6px; }
-  .cue-laser canvas, .laser-content {
+  .laser-content {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
   }
+  .cue-laser canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    pointer-events: none;
+  }
   .laser-fallback {
     position: absolute;
-    left: 7.5%;
-    right: 7.5%;
-    top: 117px;
-    height: 6px;
+    left: 0;
+    right: 0;
+    top: 112.5px;
+    height: 11px;
     background: currentColor;
-    box-shadow: 0 0 18px currentColor;
+    box-shadow: 0 0 28px currentColor;
     pointer-events: none;
   }
   .laser-ready .laser-fallback { display: none; }

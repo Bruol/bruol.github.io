@@ -145,6 +145,8 @@ export interface LaserElements {
   content: HTMLElement;
   /** Canvas the WebGL effect renders to. */
   output: HTMLCanvasElement;
+  /** Keep the beam attached to this element inside a larger overlay canvas. */
+  anchor?: HTMLElement;
 }
 
 export interface LaserInstance {
@@ -367,7 +369,7 @@ void main () {
 
   vec3 beamToned = (1.0 - exp(-beam)) * env;
   float ba = max(max(beamToned.r, beamToned.g), beamToned.b);
-  if (ba > 0.003) {
+  if (ba > 0.0) {
     col = beamToned + col * (1.0 - ba);
     alpha = ba + alpha * (1.0 - ba);
   }
@@ -391,7 +393,7 @@ export function createLaser(
   options: LaserOptions = {},
 ): LaserInstance | null {
   const config = { ...DEFAULTS, ...options };
-  const { source, content, output } = elements;
+  const { source, content, output, anchor } = elements;
 
   const gl = output.getContext("webgl2", {
     alpha: true,
@@ -405,6 +407,7 @@ export function createLaser(
   const sourceCtx = source.getContext("2d") as ElementImageContext | null;
   const paintable = source as PaintableCanvas;
   const htmlInCanvas = Boolean(
+    !anchor &&
     sourceCtx &&
     typeof sourceCtx.drawElementImage === "function" &&
     typeof paintable.requestPaint === "function",
@@ -515,7 +518,7 @@ export function createLaser(
       output.width = width;
       output.height = height;
     }
-    contentMaxX = Math.min(
+    contentMaxX = anchor ? 1 : Math.min(
       1,
       Math.max(0.05, content.clientWidth / Math.max(output.clientWidth, 1)),
     );
@@ -598,6 +601,7 @@ export function createLaser(
   }
 
   function render() {
+    const reaction = Math.max(config.reactivity, 0) * activity;
     uploadContent();
     gl!.useProgram(program);
     gl!.activeTexture(gl!.TEXTURE0);
@@ -607,11 +611,22 @@ export function createLaser(
     gl!.uniform1f(uniforms.uTime, time);
     const dpr = output.width / Math.max(output.clientWidth, 1);
     const clientH = Math.max(output.clientHeight, 1);
+    let beamY = Math.min(Math.max(config.offset, 0) / clientH, 0.95);
+    if (anchor) {
+      // A viewport-sized canvas lets the glow overlap surrounding page content.
+      // Read the anchor each frame so scrolling never pins the beam to the screen.
+      const bounds = anchor.getBoundingClientRect();
+      const canvasBounds = output.getBoundingClientRect();
+      const clientW = Math.max(output.clientWidth, 1);
+      beamCX = (bounds.left + bounds.width * 0.5 - canvasBounds.left) / clientW;
+      beamSpan = bounds.width / clientW;
+      beamY = (canvasBounds.bottom - bounds.bottom + Math.max(config.offset, 0)) / clientH;
+    }
     gl!.uniform1f(
       uniforms.uBeamY,
-      Math.min(Math.max(config.offset, 0) / clientH, 0.95),
+      beamY,
     );
-    gl!.uniform1f(uniforms.uWaveAmp, Math.max(config.wave, 0) / clientH);
+    gl!.uniform1f(uniforms.uWaveAmp, Math.max(config.wave, 0) * (1 + reaction * 0.9) / clientH);
     gl!.uniform1f(uniforms.uBeamCX, beamCX);
     gl!.uniform1f(
       uniforms.uBeamHalfW,
@@ -619,10 +634,10 @@ export function createLaser(
     );
     gl!.uniform1f(
       uniforms.uHalfCore,
-      Math.max(config.thickness, 0.5) * dpr * 0.5,
+      Math.max(config.thickness, 0.5) * dpr * 0.5 * (1 + reaction * 0.2),
     );
     gl!.uniform1f(uniforms.uCore, Math.max(config.core, 0));
-    gl!.uniform1f(uniforms.uRadius, Math.max(config.radius, 0.5) * dpr);
+    gl!.uniform1f(uniforms.uRadius, Math.max(config.radius, 0.5) * dpr * (1 + reaction * 0.6));
     gl!.uniform1f(uniforms.uGlow, Math.max(config.glow, 0));
     gl!.uniform3f(
       uniforms.uColor,
@@ -632,7 +647,7 @@ export function createLaser(
     );
     const flick =
       1 - Math.min(Math.max(config.flicker, 0), 1) * noiseCpu(time * 1.8, 3.7);
-    const boost = 1 + Math.max(config.reactivity, 0) * activity * 1.6;
+    const boost = 1 + reaction * 3;
     gl!.uniform1f(uniforms.uBright, flick * boost);
     gl!.uniform1f(uniforms.uRevealH, Math.max(config.reveal, 0) / clientH);
     gl!.uniform1f(
@@ -671,8 +686,8 @@ export function createLaser(
     const delta = Math.min((now - lastTime) / 1000, 1 / 30);
     lastTime = now;
     if (!reducedMotion) {
-      time += delta * config.speed;
-      activity *= Math.exp(-delta * 2.4);
+      time += delta * config.speed * (1 + Math.max(config.reactivity, 0) * activity * 1.8);
+      activity *= Math.exp(-delta * 1.8);
     }
     render();
     if (reducedMotion && !contentDirty) {
@@ -692,16 +707,19 @@ export function createLaser(
   wake = start;
   start();
 
-  let lastScrollTop = content.scrollTop;
+  // The homepage scrolls the document; embedded demos may scroll content itself.
+  const scrollTop = () => content.scrollTop + window.scrollY;
+  let lastScrollTop = scrollTop();
   function onScroll() {
-    const top = content.scrollTop;
+    const top = scrollTop();
     if (!reducedMotion) {
-      activity = Math.min(1, activity + Math.abs(top - lastScrollTop) / 600);
+      activity = Math.min(1, activity + Math.abs(top - lastScrollTop) / 180);
     }
     lastScrollTop = top;
     start();
   }
   content.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   function onMotionChange() {
     reducedMotion = motionQuery.matches;
@@ -720,8 +738,13 @@ export function createLaser(
   const intersection = new IntersectionObserver((entries) => {
     visible = entries[entries.length - 1]?.isIntersecting ?? true;
     if (visible) start();
-  });
-  intersection.observe(output);
+    else if (anchor) {
+      // An offscreen anchor must not leave its last frame on the fixed overlay.
+      gl!.clearColor(0, 0, 0, 0);
+      gl!.clear(gl!.COLOR_BUFFER_BIT);
+    }
+  }, anchor ? { rootMargin: '240px' } : undefined);
+  intersection.observe(anchor ?? output);
 
   return {
     setOptions(next) {
@@ -742,6 +765,7 @@ export function createLaser(
       destroyed = true;
       cancelAnimationFrame(raf);
       content.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
       observer.disconnect();
       intersection.disconnect();
       motionQuery.removeEventListener("change", onMotionChange);
@@ -754,4 +778,3 @@ export function createLaser(
     },
   };
 }
-
