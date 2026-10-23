@@ -1,9 +1,5 @@
 <div class="scroll-cue">
-  <a href="#projects" class="cue-laser" aria-label="Scroll to projects">
-    <span class="laser-content" aria-hidden="true"></span>
-    <span class="laser-fallback" aria-hidden="true"></span>
-    <canvas aria-hidden="true"></canvas>
-  </a>
+  <a href="#projects" class="cue-projects" aria-label="Scroll to projects">projects</a>
 </div>
 <script is:inline>
   {
@@ -27,73 +23,29 @@
   }
 </script>
 
-<script>
-  const laser = document.querySelector<HTMLAnchorElement>('.cue-laser');
-  if (laser) {
-    const { createLaser } = await import('../scripts/vendor/laser');
-    const instance = createLaser({
-      source: document.createElement('canvas'),
-      content: laser.querySelector<HTMLElement>('.laser-content')!,
-      output: laser.querySelector<HTMLCanvasElement>('canvas')!,
-    }, {
-      color: [1, 20 / 255, 147 / 255],
-      offset: 120,
-      width: .85,
-      thickness: 6,
-      core: .35,
-      radius: 18,
-      glow: 1.3,
-      speed: .15,
-      wave: 2,
-      flicker: .04,
-      reveal: 0,
-      heat: 0,
-      shimmer: 0,
-      sparkle: 0,
-      reactivity: 0,
-    });
-    if (instance) laser.classList.add('laser-ready');
-    window.addEventListener('pagehide', (event) => {
-      if (!event.persisted) instance?.destroy();
-    }, { once: true });
-  }
-</script>
-
 <style>
   .scroll-cue {
-    display: flex;
-    justify-content: center;
     position: relative;
     margin-top: auto;
     height: 0;
   }
-  .cue-laser {
+  .cue-projects {
     position: absolute;
-    top: -96px;
-    width: 720px;
-    max-width: 100%;
-    height: 240px;
-    color: var(--link-accent);
+    left: 0;
+    /* The opening view ends 24px below this zero-height container. */
+    top: 24px;
+    transform: translateY(-50%);
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -.025em;
   }
-  .cue-laser:focus-visible { outline: 2px solid; outline-offset: 6px; }
-  .cue-laser canvas, .laser-content {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  .cue-projects:focus-visible {
+    transform: translateY(-100%);
+    outline: 2px solid;
+    outline-offset: 6px;
   }
-  .laser-fallback {
-    position: absolute;
-    left: 7.5%;
-    right: 7.5%;
-    top: 117px;
-    height: 6px;
-    background: currentColor;
-    box-shadow: 0 0 18px currentColor;
-    pointer-events: none;
-  }
-  .laser-ready .laser-fallback { display: none; }
   @media (max-width: 700px), (max-height: 600px) {
     .scroll-cue:not(.opening-fits) a { display: none; }
   }
