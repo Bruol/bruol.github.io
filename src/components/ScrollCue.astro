@@ -1,105 +1,56 @@
 <div class="scroll-cue">
-  <a href="#projects" class="cue-laser" aria-label="Scroll to projects">
-    <span class="laser-content" aria-hidden="true"></span>
-    <span class="laser-fallback" aria-hidden="true"></span>
-    <canvas aria-hidden="true"></canvas>
-  </a>
+  <a href="#projects" class="cue-projects" aria-label="Scroll to projects">Projects</a>
 </div>
 <script is:inline>
   {
     const cue = document.querySelector('.scroll-cue');
     const profile = document.querySelector('.opening-view .profile');
-    const updateFit = () => {
-      if (!profile) return;
-      const contentBottom = profile.getBoundingClientRect().bottom + window.scrollY + 24;
-      cue.classList.toggle('opening-fits', contentBottom <= window.innerHeight);
+    const updateEdge = () => {
+      const profileBottom = profile.getBoundingClientRect().bottom + window.scrollY;
+      const fits = window.innerWidth > 700 && window.innerHeight > 600 &&
+        profileBottom + 64 <= window.innerHeight;
+      cue.classList.toggle('at-screen-edge', fits);
+      cue.style.setProperty('--cue-edge', `${window.innerHeight}px`);
     };
-    // Wait for the final font metrics before showing the mobile indicator.
+    updateEdge();
     document.fonts.ready.then(() => {
-      updateFit();
-      const observer = new ResizeObserver(updateFit);
+      updateEdge();
+      const observer = new ResizeObserver(updateEdge);
       observer.observe(profile);
       const masthead = document.querySelector('.masthead');
       if (masthead) observer.observe(masthead);
-      window.addEventListener('resize', updateFit, { passive: true });
-      window.addEventListener('pageshow', updateFit);
     });
-  }
-</script>
-
-<script>
-  import { laserSettings } from '../scripts/laser-settings';
-
-  const laser = document.querySelector<HTMLAnchorElement>('.cue-laser');
-  if (laser) {
-    const { createLaser } = await import('../scripts/vendor/laser');
-    const instance = createLaser({
-      source: document.createElement('canvas'),
-      content: laser.querySelector<HTMLElement>('.laser-content')!,
-      output: laser.querySelector<HTMLCanvasElement>('canvas')!,
-      anchor: laser,
-    }, laserSettings);
-    let cleanupControls: (() => void) | undefined;
-    if (instance) {
-      laser.classList.add('laser-ready');
-      if (import.meta.env.DEV) {
-        const { mountLaserControls } = await import('../scripts/laser-controls');
-        cleanupControls = mountLaserControls(instance);
-      }
-    }
-    window.addEventListener('pagehide', (event) => {
-      if (!event.persisted) {
-        cleanupControls?.();
-        instance?.destroy();
-      }
-    }, { once: true });
+    window.addEventListener('resize', updateEdge, { passive: true });
+    window.addEventListener('pageshow', updateEdge);
   }
 </script>
 
 <style>
   .scroll-cue {
-    display: flex;
-    justify-content: center;
-    position: relative;
     margin-top: auto;
+    padding-top: 32px;
+  }
+  .cue-projects {
+    display: block;
+    width: max-content;
+    color: var(--link-accent);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.025em;
+  }
+  .at-screen-edge {
+    position: absolute;
+    top: var(--cue-edge, 100svh);
+    left: 24px;
+    padding-top: 0;
     height: 0;
   }
-  .cue-laser {
-    position: absolute;
-    top: -96px;
-    width: 800px;
-    max-width: 100%;
-    height: 240px;
-    color: var(--link-accent);
+  .at-screen-edge .cue-projects {
+    /* Keep the word readable while the bottom of its letters slips below the fold. */
+    transform: translateY(-78%);
   }
-  .cue-laser:focus-visible { outline: 2px solid; outline-offset: 6px; }
-  .laser-content {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .cue-laser canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 20;
-    pointer-events: none;
-  }
-  .laser-fallback {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 112.5px;
-    height: 11px;
-    background: currentColor;
-    box-shadow: 0 0 28px currentColor;
-    pointer-events: none;
-  }
-  .laser-ready .laser-fallback { display: none; }
-  @media (max-width: 700px), (max-height: 600px) {
-    .scroll-cue:not(.opening-fits) a { display: none; }
+  .at-screen-edge .cue-projects:focus-visible {
+    transform: translateY(-100%);
   }
 </style>
