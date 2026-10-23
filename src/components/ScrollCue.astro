@@ -1,52 +1,56 @@
 <div class="scroll-cue">
-  <a href="#projects" class="cue-projects" aria-label="Scroll to projects">projects</a>
+  <a href="#projects" class="cue-projects" aria-label="Scroll to projects">Projects</a>
 </div>
 <script is:inline>
   {
     const cue = document.querySelector('.scroll-cue');
     const profile = document.querySelector('.opening-view .profile');
-    const updateFit = () => {
-      if (!profile) return;
-      const contentBottom = profile.getBoundingClientRect().bottom + window.scrollY + 24;
-      cue.classList.toggle('opening-fits', contentBottom <= window.innerHeight);
+    const updateEdge = () => {
+      const profileBottom = profile.getBoundingClientRect().bottom + window.scrollY;
+      const fits = window.innerWidth > 700 && window.innerHeight > 600 &&
+        profileBottom + 64 <= window.innerHeight;
+      cue.classList.toggle('at-screen-edge', fits);
+      cue.style.setProperty('--cue-edge', `${window.innerHeight}px`);
     };
-    // Wait for the final font metrics before showing the mobile indicator.
+    updateEdge();
     document.fonts.ready.then(() => {
-      updateFit();
-      const observer = new ResizeObserver(updateFit);
+      updateEdge();
+      const observer = new ResizeObserver(updateEdge);
       observer.observe(profile);
       const masthead = document.querySelector('.masthead');
       if (masthead) observer.observe(masthead);
-      window.addEventListener('resize', updateFit, { passive: true });
-      window.addEventListener('pageshow', updateFit);
     });
+    window.addEventListener('resize', updateEdge, { passive: true });
+    window.addEventListener('pageshow', updateEdge);
   }
 </script>
 
 <style>
   .scroll-cue {
-    position: relative;
     margin-top: auto;
-    height: 0;
+    padding-top: 32px;
   }
   .cue-projects {
-    position: absolute;
-    left: 0;
-    /* The opening view ends 24px below this zero-height container. */
-    top: 24px;
-    transform: translateY(-50%);
-    color: #000;
-    font-size: 20px;
-    font-weight: 700;
+    display: block;
+    width: max-content;
+    color: var(--link-accent);
+    font-size: 28px;
+    font-weight: 800;
     line-height: 1;
     letter-spacing: -.025em;
   }
-  .cue-projects:focus-visible {
-    transform: translateY(-100%);
-    outline: 2px solid;
-    outline-offset: 6px;
+  .at-screen-edge {
+    position: absolute;
+    top: var(--cue-edge, 100svh);
+    left: 24px;
+    padding-top: 0;
+    height: 0;
   }
-  @media (max-width: 700px), (max-height: 600px) {
-    .scroll-cue:not(.opening-fits) a { display: none; }
+  .at-screen-edge .cue-projects {
+    /* Keep the word readable while the bottom of its letters slips below the fold. */
+    transform: translateY(-78%);
+  }
+  .at-screen-edge .cue-projects:focus-visible {
+    transform: translateY(-100%);
   }
 </style>
