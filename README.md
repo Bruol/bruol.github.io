@@ -20,12 +20,6 @@ Profile content: `src/data/site.js`. Layout: `src/components/BrutalistHome.astro
 Styles: `src/styles/global.css`. The ETH Zurich logo is an inline SVG in
 `src/components/EthLogo.astro`.
 
-In development, open **Laser controls · dev** in the bottom-right corner to tune
-the homepage beam live. Settings persist in your browser; **Reset defaults**
-restores the checked-in look. **Copy settings** exports values to paste into
-`src/scripts/laser-settings.ts`. The panel and its saved overrides are excluded
-from production builds. Reduced-motion preferences still pause the animation.
-
 Legacy Hugo files remain in `content/`, `layouts/`, and `static/`. Astro uses
 `src/` and `public/`.
 
