@@ -8,6 +8,6 @@ order: 10
 links: []
 ---
 
-With Kenji Yuri Nakano, I built a C++ differential fuzzer for SQLite. It generates schema-aware SQL trees and runs each query against identical database copies using a patched target and a reference binary. Failures retain the query, setup, database, and outputs for debugging.
+With [Kenji Yuri Nakano](https://www.linkedin.com/in/kenji-y-nakano/), I built a C++ differential fuzzer for SQLite. It generates schema-aware SQL trees and runs each query against identical database copies using a patched target and a reference binary. Failures retain the query, setup, database, and outputs for debugging.
 
 A 10,000-query evaluation produced 431 reports, including duplicates and false positives—not 431 distinct bugs. Queries using `random()` exposed an oracle problem: two valid executions can legitimately disagree.

@@ -8,6 +8,6 @@ order: 11
 links: []
 ---
 
-With Kenji Yuri Nakano, I built a Python reducer combining statement-level delta debugging with SQLGlot AST rewrites. Each deletion or simplification stays only if an external oracle confirms the bug still reproduces.
+With [Kenji Yuri Nakano](https://www.linkedin.com/in/kenji-y-nakano/), I built a Python reducer combining statement-level delta debugging with SQLGlot AST rewrites. Each deletion or simplification stays only if an external oracle confirms the bug still reproduces.
 
 Parallel checks, cached verdicts, and incremental rendering cut repeated work. Across 20 benchmark queries, it preserved every reproducer while shrinking 51,710 tokens to 2,097—a 95.9% reduction. The outputs preserve the bug; they are not guaranteed globally minimal.
