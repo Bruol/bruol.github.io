@@ -11,7 +11,7 @@ image: "/projects/thinking-outside-the-bias/pipeline.png"
 imageAlt: "Bias evaluation pipeline diagram"
 ---
 
-With Coralie Sage and Finn Brunke, I built a Python framework that separates the model answering a question from the model judging its bias. We tested reasoning models on BBQ and StereoSet, comparing prompting strategies and reasoning budgets.
+With [Coralie Sage](https://www.linkedin.com/in/coraliesage/) and [Finn Brunke](https://www.linkedin.com/in/finn-brunke/), I built a Python framework that separates the model answering a question from the model judging its bias. We tested reasoning models on BBQ and StereoSet, comparing prompting strategies and reasoning budgets.
 
 ![Bias evaluation pipeline](/projects/thinking-outside-the-bias/pipeline.png)
 
