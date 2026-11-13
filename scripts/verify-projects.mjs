@@ -9,7 +9,7 @@ const selected = [
   'esp32-eink', 'drifa-poster', 'phone-message', 'thinking-outside-the-bias',
   'zinkbad-calendar', 'hci-prototype', 'bgp-routeviews', 'keyboard-sound-trigger',
   'mqtt-gas-counter', 'japanese-election-scraper', 'wifi-thermometer', 'cemets-app',
-  'sql-ast-research', 'database-query-reduction',
+  'sql-ast-research', 'database-query-reduction', 'compiler-design',
 ];
 
 const index = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
@@ -25,5 +25,5 @@ for (const slug of selected) {
   assert(legacy.includes(`/projects/${slug}/`), `Missing legacy blog route: ${slug}`);
   assert(!page.includes('cesbot.ces.ethz.ch'), `Private CesBot URL published in ${slug}`);
 }
-assert.equal((index.match(/data-category=/g) ?? []).length, selected.length, 'Project index must contain all 26 selected projects');
+assert.equal((index.match(/data-category=/g) ?? []).length, selected.length, 'Project index must contain all selected projects');
 console.log(`Verified all ${selected.length} selected projects: index links and individual articles.`);
