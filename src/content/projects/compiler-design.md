@@ -9,6 +9,6 @@ order: 27
 links: []
 ---
 
-With Fabius Grünhagen, I built a compiler for ETH's Compiler Design course. Each assignment added a stage. First came an x86-64 subset simulator and assembler, then an LLVM IR to x86 backend. After that we wrote a frontend for Oat, a small imperative language, and added type checking, structs, and function pointers.
+With [Fabius Grünhagen](https://gruefa.me/), I built a compiler for ETH's Compiler Design course. Each assignment added a stage. First came an x86-64 subset simulator and assembler, then an LLVM IR to x86 backend. After that we wrote a frontend for Oat, a small imperative language, and added type checking, structs, and function pointers.
 
 The final assignment added a dataflow framework. On top of it we built alias analysis, dead-code elimination, constant propagation, and a liveness-based register allocator that had to beat the default greedy one.
