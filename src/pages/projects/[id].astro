@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectDemo from '../../components/ProjectDemo.astro';
+import ProjectFacts from '../../components/ProjectFacts.astro';
+import ProjectMedia from '../../components/ProjectMedia.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -10,29 +11,23 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, category, role, period, tags, image, imageAlt, links, demo } = project.data;
+const { title, description, image } = project.data;
+// Lead image beside the story, unless the article already shows it.
+const heroImage = !project.data.demo && image && !project.body?.includes(image) ? image : undefined;
 ---
 
 <BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
-  <article class="project-article">
-    <a class="project-back" href="/#projects">All projects</a>
-    <header class="project-heading">
-      {project.id === 'flateroo' && <div class="flateroo-header">
-        <img src="/projects/flateroo/wordmark.png" alt="Flateroo" width="2806" height="578" fetchpriority="high" />
-      </div>}
-      <p class="project-eyebrow">{category}{period && ` · ${period}`}</p>
+  <article class="project-page">
+    <div class="project-story">
+      <a class="project-back" href="/#projects">All projects</a>
       <h1>{title}</h1>
       <p class="project-lede">{description}</p>
-      <p class="project-role">{role}</p>
-      <ul class="project-tags" aria-label="Technologies and topics">
-        {tags.map((tag) => <li>{tag}</li>)}
-      </ul>
-      {links.length > 0 && <nav class="project-links" aria-label="Project resources">
-        {links.map((link) => <a href={link.url}>{link.label}</a>)}
-      </nav>}
-    </header>
-    {demo && <ProjectDemo {...demo} />}
-    <div class="project-prose"><Content /></div>
-    <footer class="project-end"><a href="/#projects">Explore the other projects</a></footer>
+      <div class="project-prose"><Content /></div>
+      <p class="project-end"><a href="/#projects">Back to all projects</a></p>
+    </div>
+    <aside class="project-panel">
+      <ProjectFacts project={project} />
+      <ProjectMedia project={project} heroImage={heroImage} />
+    </aside>
   </article>
 </BaseLayout>
