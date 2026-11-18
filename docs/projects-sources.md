@@ -25,7 +25,7 @@ All 26 entries marked `include: true` in the supplied selection are included; ex
 
 ## Image provenance
 
-- CesBot: real shared-browser captures after the user signed in. The chat screenshot excludes the account sidebar. The citation capture is cropped to the source-viewer modal, excluding the account area. The private application URL is absent from published content.
+- CesBot: the article plays the CeMi product demo (live HTML on desktop, MP4 elsewhere) copied from the CES website repository's `t3/cemi-live-html-demo` branch into `public/projects/cesbot/`. `chat.png` remains the share image; the private application URL is absent from published content.
 - Flateroo: supplied English App Store screenshots, resized and encoded as JPEG for web delivery.
 - CEMETS: supplied local application screen montage.
 - Phone Message, Drifa, and Thinking Outside the Bias: images from their respective public repositories.

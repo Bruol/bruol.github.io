@@ -1,0 +1,65 @@
+---
+// A 16:9 product demo. Without JavaScript, or with reduced motion, it is a
+// plain video with controls. Desktop visitors get the live HTML version
+// (sharper and lighter); other devices get the muted, looping MP4.
+interface Props { src: string; video: string; poster: string; label: string }
+const { src, video, poster, label } = Astro.props;
+---
+<figure class="project-demo" data-project-demo data-src={src}>
+  <div class="project-demo-frame">
+    <video src={video} poster={poster} width="1920" height="1080" muted loop playsinline controls preload="none" aria-label={label}></video>
+  </div>
+  <figcaption>{label}</figcaption>
+</figure>
+
+<script>
+  const desktop = window.matchMedia('(min-width: 1081px) and (hover: hover) and (pointer: fine)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  for (const figure of document.querySelectorAll<HTMLElement>('[data-project-demo]')) {
+    const frame = figure.querySelector<HTMLElement>('.project-demo-frame')!;
+    const video = frame.querySelector('video')!;
+    const label = video.getAttribute('aria-label') ?? '';
+    let live: HTMLIFrameElement | null = null;
+    let visible = false;
+
+    const sync = () => {
+      if (live) {
+        live.contentWindow?.postMessage({ cemiDemo: visible ? 'play' : 'pause' }, location.origin);
+      } else if (!reduceMotion.matches) {
+        if (visible) video.play().catch(() => {});
+        else video.pause();
+      }
+    };
+
+    const update = () => {
+      const wantLive = desktop.matches && !reduceMotion.matches;
+      if (wantLive && !live) {
+        live = document.createElement('iframe');
+        live.src = figure.dataset.src!;
+        live.title = label;
+        live.tabIndex = -1;
+        live.addEventListener('load', sync);
+        video.pause();
+        video.hidden = true;
+        frame.append(live);
+      } else if (!wantLive && live) {
+        live.remove();
+        live = null;
+        video.hidden = false;
+      }
+      // Reduced motion: leave the video paused with controls.
+      video.controls = reduceMotion.matches;
+      if (reduceMotion.matches) video.pause();
+      sync();
+    };
+
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    }, { rootMargin: '200px 0px' }).observe(frame);
+    desktop.addEventListener('change', update);
+    reduceMotion.addEventListener('change', update);
+    update();
+  }
+</script>

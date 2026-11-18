@@ -14,6 +14,7 @@ const projects = defineCollection({
     image: z.string().optional(),
     icon: z.string().optional(),
     imageAlt: z.string().optional(),
+    demo: z.object({ src: z.string(), video: z.string(), poster: z.string(), label: z.string() }).optional(),
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
   }),
 });
