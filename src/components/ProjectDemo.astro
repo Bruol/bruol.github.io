@@ -1,65 +1,123 @@
 ---
-// A 16:9 product demo. Without JavaScript, or with reduced motion, it is a
-// plain video with controls. Desktop visitors get the live HTML version
-// (sharper and lighter); other devices get the muted, looping MP4.
-interface Props { src: string; video: string; poster: string; label: string }
-const { src, video, poster, label } = Astro.props;
+// A 16:9 product demo, enhanced in steps:
+// - No JavaScript or reduced motion: a paused video with native controls.
+// - Phones and tablets: the same video (720p there) plays muted while on screen,
+//   with native controls so it can be paused.
+// - Desktop: the live HTML version (sharper, lighter) replaces the video once it
+//   has loaded, with its own pause button. If it fails, the video stays.
+interface Props { src: string; video: string; videoSmall?: string; poster: string; label: string }
+const { src, video, videoSmall, poster, label } = Astro.props;
+const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
 ---
-<figure class="project-demo" data-project-demo data-src={src}>
+<figure class="project-demo" data-project-demo data-src={src} style={`--demo-poster: url('${poster}')`}>
   <div class="project-demo-frame">
-    <video src={video} poster={poster} width="1920" height="1080" muted loop playsinline controls preload="none" aria-label={label}></video>
+    <video poster={poster} width="1920" height="1080" muted loop playsinline controls preload="none" aria-labelledby={captionId}>
+      {videoSmall && <source src={videoSmall} type="video/mp4" media="(max-width: 1080px)" />}
+      <source src={video} type="video/mp4" />
+    </video>
+    <button class="project-demo-toggle" type="button" aria-pressed="false" hidden>Pause demo</button>
   </div>
-  <figcaption>{label}</figcaption>
+  <figcaption id={captionId}>{label}</figcaption>
 </figure>
 
 <script>
   const desktop = window.matchMedia('(min-width: 1081px) and (hover: hover) and (pointer: fine)');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const READY_TIMEOUT = 8000; // ms
+
+  type DemoWindow = Window & { ready?: Promise<unknown> };
 
   for (const figure of document.querySelectorAll<HTMLElement>('[data-project-demo]')) {
     const frame = figure.querySelector<HTMLElement>('.project-demo-frame')!;
     const video = frame.querySelector('video')!;
-    const label = video.getAttribute('aria-label') ?? '';
-    let live: HTMLIFrameElement | null = null;
-    let visible = false;
+    const toggle = frame.querySelector<HTMLButtonElement>('.project-demo-toggle')!;
+    let live: HTMLIFrameElement | null = null; // shown only once ready
+    let loading: HTMLIFrameElement | null = null;
+    let near = false;    // within 200px of the viewport: worth loading
+    let visible = false; // actually on screen: worth playing
+    let userPaused = false;
+    let autoPausing = false;
+
+    const autoplay = () => !reduceMotion.matches;
 
     const sync = () => {
+      const play = visible && !userPaused && autoplay();
+      if (loading) return; // the live demo will take over; don't fetch the MP4
       if (live) {
-        live.contentWindow?.postMessage({ cemiDemo: visible ? 'play' : 'pause' }, location.origin);
-      } else if (!reduceMotion.matches) {
-        if (visible) video.play().catch(() => {});
-        else video.pause();
+        live.contentWindow?.postMessage({ cemiDemo: play ? 'play' : 'pause' }, location.origin);
+      } else if (play && video.paused) {
+        video.play().catch(() => {}); // autoplay refused: the native controls remain
+      } else if (!play && !video.paused && !userPaused) {
+        autoPausing = true;
+        video.pause();
       }
+    };
+
+    // Respect pauses made with the native video controls.
+    video.addEventListener('pause', () => {
+      if (!autoPausing && visible) userPaused = true;
+      autoPausing = false;
+    });
+    video.addEventListener('play', () => { userPaused = false; });
+
+    toggle.addEventListener('click', () => {
+      userPaused = !userPaused;
+      toggle.setAttribute('aria-pressed', String(userPaused));
+      toggle.textContent = userPaused ? 'Play demo' : 'Pause demo';
+      sync();
+    });
+
+    const dropLive = () => {
+      live?.remove(); loading?.remove();
+      live = loading = null;
+      video.hidden = false;
+      toggle.hidden = true;
+    };
+
+    const loadLive = () => {
+      if (live || loading) return;
+      const iframe = document.createElement('iframe');
+      loading = iframe;
+      iframe.src = figure.dataset.src!;
+      iframe.title = '';
+      iframe.tabIndex = -1;
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.className = 'is-loading';
+      // A blocked or broken demo may never load: fall back to the video.
+      const fail = () => { if (loading === iframe) { dropLive(); sync(); } };
+      const timer = setTimeout(fail, READY_TIMEOUT);
+      iframe.addEventListener('load', async () => {
+        let ok = false;
+        try { // throws if the frame ended up on an error page (cross-origin)
+          const ready = (iframe.contentWindow as DemoWindow | null)?.ready;
+          ok = !!ready && await ready.then(() => true, () => false);
+        } catch {}
+        if (loading !== iframe) return; // superseded or timed out meanwhile
+        clearTimeout(timer);
+        if (!ok) { fail(); return; }
+        loading = null;
+        live = iframe;
+        iframe.classList.remove('is-loading');
+        autoPausing = !video.paused;
+        video.pause();
+        video.hidden = true;
+        toggle.hidden = false;
+        sync();
+      }, { once: true });
+      frame.prepend(iframe);
     };
 
     const update = () => {
-      const wantLive = desktop.matches && !reduceMotion.matches;
-      if (wantLive && !live) {
-        live = document.createElement('iframe');
-        live.src = figure.dataset.src!;
-        live.title = label;
-        live.tabIndex = -1;
-        live.addEventListener('load', sync);
-        video.pause();
-        video.hidden = true;
-        frame.append(live);
-      } else if (!wantLive && live) {
-        live.remove();
-        live = null;
-        video.hidden = false;
-      }
-      // Reduced motion: leave the video paused with controls.
-      video.controls = reduceMotion.matches;
-      if (reduceMotion.matches) video.pause();
+      const wantLive = desktop.matches && autoplay();
+      if (wantLive && near) loadLive();
+      else if (!wantLive) dropLive();
+      if (reduceMotion.matches && !video.paused) { autoPausing = true; video.pause(); }
       sync();
     };
 
-    new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      sync();
-    }, { rootMargin: '200px 0px' }).observe(frame);
+    new IntersectionObserver(([entry]) => { near = entry.isIntersecting; update(); }, { rootMargin: '200px 0px' }).observe(frame);
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: 0.25 }).observe(frame);
     desktop.addEventListener('change', update);
     reduceMotion.addEventListener('change', update);
-    update();
   }
 </script>
