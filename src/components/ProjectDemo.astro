@@ -15,7 +15,7 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
       {videoSmall && <source src={videoSmall} type="video/mp4" media="(max-width: 1080px)" />}
       <source src={video} type="video/mp4" />
     </video>
-    <button class="project-demo-toggle" type="button" aria-pressed="false" hidden>Pause demo</button>
+    <button class="project-demo-toggle" type="button" hidden>Pause demo</button>
   </div>
   <figcaption id={captionId}>{label}</figcaption>
 </figure>
@@ -37,19 +37,22 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
     let visible = false; // actually on screen: worth playing
     let userPaused = false;
     let autoPausing = false;
-    let keepVideo = false; // the visitor started the video themselves
+    let keepVideo = false;  // the visitor is using the video: leave it in place
+    let liveFailed = false; // don't retry a broken live demo on this visit
 
     const setPaused = (paused: boolean) => {
       userPaused = paused;
-      toggle.setAttribute('aria-pressed', String(paused));
       toggle.textContent = paused ? 'Play demo' : 'Pause demo';
     };
 
     const autoplay = () => !reduceMotion.matches;
+    const wantLive = () => desktop.matches && autoplay() && !keepVideo && !liveFailed;
 
     const sync = () => {
       const play = visible && !userPaused && autoplay();
-      if (loading) return; // the live demo will take over; don't fetch the MP4
+      // The live demo will take over: don't fetch or start the MP4 meanwhile.
+      // (So on desktop, any video playback before then is the visitor's own.)
+      if (wantLive() && !live) return;
       if (live) {
         live.contentWindow?.postMessage({ cemiDemo: play ? 'play' : 'pause' }, location.origin);
       } else if (play && video.paused) {
@@ -68,7 +71,7 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
     video.addEventListener('play', () => {
       setPaused(false);
       // Don't swap the live demo in under someone already watching the video.
-      if (loading) { keepVideo = true; dropLive(); }
+      if (wantLive() && !live) { keepVideo = true; dropLive(); }
     });
 
     toggle.addEventListener('click', () => { setPaused(!userPaused); sync(); });
@@ -90,7 +93,7 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
       iframe.setAttribute('aria-hidden', 'true');
       iframe.className = 'is-loading';
       // A blocked or broken demo may never load: fall back to the video.
-      const fail = () => { if (loading === iframe) { dropLive(); sync(); } };
+      const fail = () => { if (loading === iframe) { liveFailed = true; dropLive(); sync(); } };
       const timer = setTimeout(fail, READY_TIMEOUT);
       iframe.addEventListener('load', async () => {
         let ok = false;
@@ -104,6 +107,8 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
         if (loading !== iframe) return; // superseded or timed out meanwhile
         clearTimeout(timer);
         if (!ok) { fail(); return; }
+        // Keyboard focus is on the video controls: don't pull them away.
+        if (frame.contains(document.activeElement)) { keepVideo = true; dropLive(); sync(); return; }
         loading = null;
         live = iframe;
         iframe.classList.remove('is-loading');
@@ -117,14 +122,13 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
     };
 
     const update = () => {
-      const wantLive = desktop.matches && autoplay() && !keepVideo;
-      if (wantLive && near) loadLive();
-      else if (!wantLive) dropLive();
+      if (wantLive() && near) loadLive();
+      else if (!wantLive()) dropLive();
       sync();
     };
 
     new IntersectionObserver(([entry]) => { near = entry.isIntersecting; update(); }, { rootMargin: '200px 0px' }).observe(frame);
-    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: 0.25 }).observe(frame);
+    new IntersectionObserver(([entry]) => { visible = entry.intersectionRatio >= 0.25; sync(); }, { threshold: 0.25 }).observe(frame);
     desktop.addEventListener('change', update);
     reduceMotion.addEventListener('change', () => {
       if (reduceMotion.matches && !video.paused) { autoPausing = true; video.pause(); }

@@ -10,7 +10,7 @@ period: "2025–present"
 image: "/projects/cesbot/chat.png"
 icon: "/projects/cesbot/icon.png"
 imageAlt: "CeMi research chat with source citations"
-demo: {"src": "/projects/cesbot/demo/index.html", "video": "/projects/cesbot/demo.mp4", "videoSmall": "/projects/cesbot/demo-720.mp4", "poster": "/projects/cesbot/demo-poster.jpg", "label": "Demo: asking CeMi a question and opening the cited source page"}
+demo: {"src": "/projects/cesbot/demo/index.html", "video": "/projects/cesbot/demo.mp4", "videoSmall": "/projects/cesbot/demo-720.mp4", "poster": "/projects/cesbot/demo-poster.jpg", "label": "Demo: CeMi answers why Switzerland’s dual VET system keeps youth unemployment low, citing course readings, then opens a cited page with the supporting passage highlighted."}
 ---
 
 I build and maintain CeMi at ETH’s Chair of Education Systems. It helps researchers and policy makers explore education literature, with citations that open the exact passage in a PDF. The project reached 1,000 users.
