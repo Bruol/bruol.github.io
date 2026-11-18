@@ -6,6 +6,7 @@ Lorin Urbantat’s personal website, built with Astro and Tailwind CSS.
 bun install --frozen-lockfile
 bun run dev
 bun run build
+bun run preview
 ```
 
 Use Node 22.12+ and Bun 1.3.9. The static build is written to `dist/`.
