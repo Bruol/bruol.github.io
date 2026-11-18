@@ -5,11 +5,19 @@ import ProjectFacts from '../../components/ProjectFacts.astro';
 import ProjectMedia from '../../components/ProjectMedia.astro';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+  // Same order as the homepage list.
+  const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, i) => ({
+    params: { id: project.id },
+    props: { project, previous: projects[i - 1], next: projects[i + 1] },
+  }));
 }
 
-const { project } = Astro.props;
+const { project, previous, next } = Astro.props;
+const neighbours = [
+  previous && { label: 'Previous project', entry: previous, rel: 'prev' },
+  next && { label: 'Next project', entry: next, rel: 'next' },
+].filter(Boolean);
 const { Content } = await render(project);
 const { title, description, image } = project.data;
 // Lead image beside the story, unless the article already shows it.
@@ -19,11 +27,19 @@ const heroImage = !project.data.demo && image && !project.body?.includes(image) 
 <BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
   <article class="project-page">
     <div class="project-story">
-      <a class="project-back" href="/#projects">All projects</a>
+      <nav class="project-steps" aria-label="Previous and next project">
+        {neighbours.map(({ label, entry, rel }) => <a class={`project-step-${rel}`} href={`/projects/${entry.id}/`} rel={rel}>{label}</a>)}
+      </nav>
       <h1>{title}</h1>
       <p class="project-lede">{description}</p>
       <div class="project-prose"><Content /></div>
-      <p class="project-end"><a href="/#projects">Back to all projects</a></p>
+      <nav class="project-pager" aria-label="More projects">
+        {neighbours.map(({ label, entry, rel }) => (
+          <a class={`project-pager-${rel}`} href={`/projects/${entry.id}/`} rel={rel}>
+            <span>{label}</span>{entry.data.title}
+          </a>
+        ))}
+      </nav>
     </div>
     <aside class="project-panel">
       <ProjectFacts project={project} />

@@ -160,12 +160,21 @@ h1, p { margin: 0; }
 /* Project pages: the story on the left; facts, then any demo or image, on the right. */
 .project-page { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 5vw, 88px); max-width: 1440px; margin: 0 auto; align-items: start; }
 .project-story { width: 100%; max-width: 620px; justify-self: end; }
-.project-back, .project-end a { font-size: 16px; font-weight: 700; color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
-.project-back { display: inline-block; }
+.project-steps { display: flex; gap: 12px; min-height: 44px; }
+.project-step-next { margin-left: auto; }
 .project-page h1 { margin: 32px 0 28px; font-size: clamp(48px, 6vw, 96px); font-weight: 900; line-height: .95; letter-spacing: -.055em; overflow-wrap: anywhere; }
 .project-lede { margin: 0 0 40px; font-size: clamp(22px, 2vw, 28px); font-weight: 700; line-height: 1.22; letter-spacing: -.025em; }
 .project-page .project-prose { font-size: 18px; line-height: 1.65; }
-.project-end { margin-top: 64px; }
+.project-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 72px; }
+.project-pager span { display: block; margin-bottom: 10px; font-size: 16px; font-weight: 700; letter-spacing: 0; }
+.project-pager-next { grid-column: 2; align-items: flex-end; text-align: right; }
+/* Internal navigation is a pink button; underlined links are reserved for other sites. */
+.project-steps a, .project-pager a { display: inline-flex; flex-direction: column; justify-content: center; min-height: 44px; padding-inline: 16px; background: var(--link-accent); color: #fff; font-weight: 700; text-decoration: none; transition: transform 120ms ease, box-shadow 120ms ease; }
+.project-steps a { font-size: 16px; }
+.project-pager a { justify-content: flex-start; padding: 20px 22px 24px; font-size: clamp(22px, 2vw, 28px); font-weight: 800; line-height: 1.1; letter-spacing: -.03em; overflow-wrap: anywhere; }
+.project-steps a:hover, .project-pager a:hover, .project-steps a:focus-visible, .project-pager a:focus-visible { text-decoration: none; transform: translate(-3px, -3px); box-shadow: 6px 6px 0 #000; }
+.project-steps a:focus-visible, .project-pager a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .project-steps a, .project-pager a { transition: none; } }
 .project-panel { display: grid; gap: 40px; margin-top: 64px; }
 .hero-image { margin: 0; }
 .hero-image img { display: block; width: 100%; max-height: 70vh; object-fit: contain; background: #f2f2f2; border: 1px solid #000; }
@@ -183,10 +192,10 @@ h1, p { margin: 0; }
 @media (max-width: 960px) {
   .project-page { display: flex; flex-direction: column; gap: 0; }
   .project-story { display: contents; }
-  .project-back { order: 1; align-self: flex-start; }
+  .project-steps { order: 1; }
   .project-page h1 { order: 2; }
   .project-lede { order: 3; }
   .project-panel { order: 4; margin: 0 0 40px; }
   .project-page .project-prose { order: 5; font-size: 17px; }
-  .project-end { order: 6; }
+  .project-pager { order: 6; }
 }

@@ -1,20 +1,22 @@
 ---
-// Role, time, stack and links, set large in white on the site pink.
+// Role, time, stack and links, set large in white on black.
 const { project } = Astro.props;
 const { role, period, links, tags } = project.data;
 const builtWith = tags.length > 1 ? `${tags.slice(0, -1).join(', ')} and ${tags.at(-1)}` : tags[0];
 ---
 <dl class="project-facts">
   <div><dt>Role</dt><dd>{role}</dd></div>
-  {period && <div><dt>When</dt><dd>{period}</dd></div>}
+  {period && <div><dt>When</dt><dd>{period.split('–').map((part, i) => <>{i > 0 && <span class="dash">–</span>}{part}</>)}</dd></div>}
   <div><dt>Built with</dt><dd>{builtWith}</dd></div>
   {links.length > 0 && <div><dt>Links</dt><dd class="project-facts-links">{links.map((link) => <a href={link.url}>{link.label}</a>)}</dd></div>}
 </dl>
 
 <style>
-  .project-facts { display: grid; gap: 28px; margin: 0; padding: 32px; background: var(--link-accent); color: #fff; }
+  .project-facts { display: grid; gap: 28px; margin: 0; padding: 32px; background: #000; color: #fff; }
   dt { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
-  dd { margin: 2px 0 0; font-size: clamp(24px, 2.6vw, 40px); font-weight: 700; line-height: 1.12; letter-spacing: -.03em; overflow-wrap: anywhere; }
+  dd { margin: 6px 0 0; font-size: clamp(24px, 2.6vw, 40px); font-weight: 700; line-height: 1.12; letter-spacing: -.03em; overflow-wrap: anywhere; }
+  /* Tight display tracking closes up range dashes; give them a little room. */
+  .dash { margin: 0 .12em; }
   .project-facts-links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
   a { color: #fff; text-decoration-color: #fff; text-decoration-line: underline; text-underline-offset: 6px; }
   a:focus-visible { outline-color: #fff; }

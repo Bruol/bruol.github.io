@@ -2,7 +2,7 @@
 title: "CesBot / CeMi"
 description: "A research assistant for education literature, with citations linked to PDF passages."
 category: "Applied AI"
-role: "Sole engineer · ETH Chair of Education Systems"
+role: "Software engineer · ETH Chair of Education Systems"
 tags: ["Next.js", "Convex", "RAG", "Microsoft Foundry", "Python"]
 order: 1
 links: []

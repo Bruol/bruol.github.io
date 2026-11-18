@@ -4,7 +4,7 @@ description: "A Python scraper for Japanese constituency-election results, expor
 category: "Tools & automation"
 role: "Data-collection project"
 tags: ["Python", "Beautiful Soup", "CSV", "Japanese Wikipedia"]
-order: 25
+order: 26
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/scrape_wiki_ja_election_data"}]
 ---
 

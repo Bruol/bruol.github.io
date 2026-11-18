@@ -4,7 +4,7 @@ description: "A Pygame soundboard with keyboard controls and visual playback fee
 category: "Tools & automation"
 role: "Personal utility"
 tags: ["Python", "Pygame", "Audio"]
-order: 23
+order: 24
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/soundtriggerer"}]
 ---
 

@@ -4,7 +4,7 @@ description: "My portfolio and project notes, built with Astro and Markdown."
 category: "Products & interfaces"
 role: "Personal project"
 tags: ["Astro", "Tailwind CSS", "Markdown", "Static site"]
-order: 13
+order: 11
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/bruol.github.io"}]
 ---
 

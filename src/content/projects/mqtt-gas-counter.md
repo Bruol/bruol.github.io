@@ -4,7 +4,7 @@ description: "An ESP8266 gas-meter pulse counter that publishes readings over MQ
 category: "Hardware"
 role: "Personal monitoring experiment"
 tags: ["ESP8266", "Arduino", "MQTT", "Pulse counting"]
-order: 24
+order: 25
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/mqtt-gas-counter"}]
 ---
 

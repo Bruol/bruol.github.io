@@ -4,7 +4,7 @@ description: "A SQL reducer that shrinks failing queries while preserving the bu
 category: "Systems & networks"
 role: "Team research project with Kenji Yuri Nakano"
 tags: ["Python", "SQLGlot", "SQLite", "Delta debugging"]
-order: 11
+order: 9
 links: []
 ---
 
