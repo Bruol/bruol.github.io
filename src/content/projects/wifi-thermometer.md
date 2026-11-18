@@ -4,7 +4,7 @@ description: "An ESP8266 thermometer with an LCD display and MQTT output."
 category: "Hardware"
 role: "Personal electronics project"
 tags: ["ESP8266", "DS18B20", "MQTT", "LCD", "Arduino"]
-order: 26
+order: 27
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/wifi_thermometer"}]
 ---
 

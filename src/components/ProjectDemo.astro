@@ -1,0 +1,138 @@
+---
+// A 16:9 product demo, enhanced in steps:
+// - No JavaScript or reduced motion: a paused video with native controls.
+// - Phones and tablets: the same video (720p there) plays muted while on screen,
+//   with native controls so it can be paused.
+// - Desktop: the live HTML version (sharper, lighter) replaces the video once it
+//   has loaded, with its own pause button. If it fails, the video stays.
+interface Props { src: string; video: string; videoSmall?: string; poster: string; label: string }
+const { src, video, videoSmall, poster, label } = Astro.props;
+const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
+---
+<figure class="project-demo" data-project-demo data-src={src} style={`--demo-poster: url('${poster}')`}>
+  <div class="project-demo-frame">
+    <video poster={poster} width="1920" height="1080" muted loop playsinline controls preload="none" aria-labelledby={captionId}>
+      {videoSmall && <source src={videoSmall} type="video/mp4" media="(max-width: 1080px)" />}
+      <source src={video} type="video/mp4" />
+    </video>
+    <button class="project-demo-toggle" type="button" hidden>Pause demo</button>
+  </div>
+  <figcaption id={captionId}>{label}</figcaption>
+</figure>
+
+<script>
+  const desktop = window.matchMedia('(min-width: 1081px) and (hover: hover) and (pointer: fine)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const READY_TIMEOUT = 8000; // ms
+
+  type DemoWindow = Window & { ready?: Promise<unknown> };
+
+  for (const figure of document.querySelectorAll<HTMLElement>('[data-project-demo]')) {
+    const frame = figure.querySelector<HTMLElement>('.project-demo-frame')!;
+    const video = frame.querySelector('video')!;
+    const toggle = frame.querySelector<HTMLButtonElement>('.project-demo-toggle')!;
+    let live: HTMLIFrameElement | null = null; // shown only once ready
+    let loading: HTMLIFrameElement | null = null;
+    let near = false;    // within 200px of the viewport: worth loading
+    let visible = false; // actually on screen: worth playing
+    let userPaused = false;
+    let autoPausing = false;
+    let keepVideo = false;  // the visitor is using the video: leave it in place
+    let liveFailed = false; // don't retry a broken live demo on this visit
+
+    const setPaused = (paused: boolean) => {
+      userPaused = paused;
+      toggle.textContent = paused ? 'Play demo' : 'Pause demo';
+    };
+
+    const autoplay = () => !reduceMotion.matches;
+    const wantLive = () => desktop.matches && autoplay() && !keepVideo && !liveFailed;
+
+    const sync = () => {
+      const play = visible && !userPaused && autoplay();
+      // The live demo will take over: don't fetch or start the MP4 meanwhile.
+      // (So on desktop, any video playback before then is the visitor's own.)
+      if (wantLive() && !live) return;
+      if (live) {
+        live.contentWindow?.postMessage({ cemiDemo: play ? 'play' : 'pause' }, location.origin);
+      } else if (play && video.paused) {
+        video.play().catch(() => {}); // autoplay refused: the native controls remain
+      } else if (!play && autoplay() && !video.paused && !userPaused) {
+        autoPausing = true;
+        video.pause();
+      }
+    };
+
+    // Respect pauses made with the native video controls.
+    video.addEventListener('pause', () => {
+      if (!autoPausing && visible) setPaused(true);
+      autoPausing = false;
+    });
+    video.addEventListener('play', () => {
+      setPaused(false);
+      // Don't swap the live demo in under someone already watching the video.
+      if (wantLive() && !live) { keepVideo = true; dropLive(); }
+    });
+
+    toggle.addEventListener('click', () => { setPaused(!userPaused); sync(); });
+
+    const dropLive = () => {
+      live?.remove(); loading?.remove();
+      live = loading = null;
+      video.hidden = false;
+      toggle.hidden = true;
+    };
+
+    const loadLive = () => {
+      if (live || loading) return;
+      const iframe = document.createElement('iframe');
+      loading = iframe;
+      iframe.src = figure.dataset.src!;
+      iframe.title = '';
+      iframe.tabIndex = -1;
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.className = 'is-loading';
+      // A blocked or broken demo may never load: fall back to the video.
+      const fail = () => { if (loading === iframe) { liveFailed = true; dropLive(); sync(); } };
+      const timer = setTimeout(fail, READY_TIMEOUT);
+      iframe.addEventListener('load', async () => {
+        let ok = false;
+        try { // throws if the frame ended up on an error page (cross-origin)
+          const win = iframe.contentWindow as DemoWindow | null;
+          if (win?.location.href === 'about:blank') return; // initial blank document
+          ok = !!win?.ready && await win.ready.then(() => true, () => false);
+          // Every image must have loaded, or the demo shows broken screens.
+          ok &&= [...win!.document.images].every((img) => img.naturalWidth > 0);
+        } catch {}
+        if (loading !== iframe) return; // superseded or timed out meanwhile
+        clearTimeout(timer);
+        if (!ok) { fail(); return; }
+        // Keyboard focus is on the video controls: don't pull them away.
+        if (frame.contains(document.activeElement)) { keepVideo = true; dropLive(); sync(); return; }
+        loading = null;
+        live = iframe;
+        iframe.classList.remove('is-loading');
+        autoPausing = !video.paused;
+        video.pause();
+        video.hidden = true;
+        toggle.hidden = false;
+        sync();
+      });
+      frame.prepend(iframe);
+    };
+
+    const update = () => {
+      if (wantLive() && near) loadLive();
+      else if (!wantLive()) dropLive();
+      sync();
+    };
+
+    new IntersectionObserver(([entry]) => { near = entry.isIntersecting; update(); }, { rootMargin: '200px 0px' }).observe(frame);
+    new IntersectionObserver(([entry]) => { visible = entry.intersectionRatio >= 0.25; sync(); }, { threshold: 0.25 }).observe(frame);
+    desktop.addEventListener('change', update);
+    reduceMotion.addEventListener('change', () => {
+      if (reduceMotion.matches && !video.paused) { autoPausing = true; video.pause(); }
+      update();
+    });
+  }
+</script>

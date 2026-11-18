@@ -4,7 +4,7 @@ description: "An evaluation framework for measuring bias in language-model answe
 category: "Applied AI"
 role: "Research project with Coralie Sage and Finn Brunke"
 tags: ["Python", "LLM evaluation", "BBQ", "StereoSet"]
-order: 8
+order: 7
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/ThinkOutsideTheBias"}, {"label": "Research paper", "url": "https://github.com/Bruol/ThinkOutsideTheBias/blob/main/CS4NLP%20Project%20Report.pdf"}]
 period: "2025"
 image: "/projects/thinking-outside-the-bias/pipeline.png"

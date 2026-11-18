@@ -1,0 +1,8 @@
+---
+import ProjectDemo from './ProjectDemo.astro';
+const { project, heroImage } = Astro.props;
+const { demo, imageAlt } = project.data;
+---
+{demo ? <ProjectDemo {...demo} /> : heroImage && (
+  <figure class="hero-image"><img src={heroImage} alt={imageAlt ?? ''} /></figure>
+)}

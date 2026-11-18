@@ -4,7 +4,7 @@ description: "A schema-aware SQL generator and differential fuzzer for SQLite."
 category: "Systems & networks"
 role: "Team research project with Kenji Yuri Nakano"
 tags: ["C++20", "SQLite", "AST", "Differential testing", "gcov"]
-order: 10
+order: 8
 links: []
 ---
 

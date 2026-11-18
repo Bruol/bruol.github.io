@@ -4,7 +4,7 @@ description: "A GitHub API script that collects recent commits for my profile di
 category: "Tools & automation"
 role: "Personal automation"
 tags: ["Bun", "TypeScript", "GitHub API"]
-order: 14
+order: 12
 links: [{"label": "GitHub profile repository", "url": "https://github.com/Bruol/bruol"}]
 ---
 

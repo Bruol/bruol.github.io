@@ -4,7 +4,7 @@ description: "A k3s cluster with ingress, TLS certificates, persistent storage, 
 category: "Systems & networks"
 role: "Personal infrastructure project"
 tags: ["k3s", "Traefik", "MetalLB", "cert-manager", "Longhorn"]
-order: 12
+order: 20
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/kubernetes-cluster"}]
 ---
 
