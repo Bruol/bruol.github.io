@@ -37,6 +37,13 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
     let visible = false; // actually on screen: worth playing
     let userPaused = false;
     let autoPausing = false;
+    let keepVideo = false; // the visitor started the video themselves
+
+    const setPaused = (paused: boolean) => {
+      userPaused = paused;
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.textContent = paused ? 'Play demo' : 'Pause demo';
+    };
 
     const autoplay = () => !reduceMotion.matches;
 
@@ -47,7 +54,7 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
         live.contentWindow?.postMessage({ cemiDemo: play ? 'play' : 'pause' }, location.origin);
       } else if (play && video.paused) {
         video.play().catch(() => {}); // autoplay refused: the native controls remain
-      } else if (!play && !video.paused && !userPaused) {
+      } else if (!play && autoplay() && !video.paused && !userPaused) {
         autoPausing = true;
         video.pause();
       }
@@ -55,17 +62,16 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
 
     // Respect pauses made with the native video controls.
     video.addEventListener('pause', () => {
-      if (!autoPausing && visible) userPaused = true;
+      if (!autoPausing && visible) setPaused(true);
       autoPausing = false;
     });
-    video.addEventListener('play', () => { userPaused = false; });
-
-    toggle.addEventListener('click', () => {
-      userPaused = !userPaused;
-      toggle.setAttribute('aria-pressed', String(userPaused));
-      toggle.textContent = userPaused ? 'Play demo' : 'Pause demo';
-      sync();
+    video.addEventListener('play', () => {
+      setPaused(false);
+      // Don't swap the live demo in under someone already watching the video.
+      if (loading) { keepVideo = true; dropLive(); }
     });
+
+    toggle.addEventListener('click', () => { setPaused(!userPaused); sync(); });
 
     const dropLive = () => {
       live?.remove(); loading?.remove();
@@ -89,8 +95,11 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
       iframe.addEventListener('load', async () => {
         let ok = false;
         try { // throws if the frame ended up on an error page (cross-origin)
-          const ready = (iframe.contentWindow as DemoWindow | null)?.ready;
-          ok = !!ready && await ready.then(() => true, () => false);
+          const win = iframe.contentWindow as DemoWindow | null;
+          if (win?.location.href === 'about:blank') return; // initial blank document
+          ok = !!win?.ready && await win.ready.then(() => true, () => false);
+          // Every image must have loaded, or the demo shows broken screens.
+          ok &&= [...win!.document.images].every((img) => img.naturalWidth > 0);
         } catch {}
         if (loading !== iframe) return; // superseded or timed out meanwhile
         clearTimeout(timer);
@@ -103,21 +112,23 @@ const captionId = `demo-caption-${src.replace(/[^a-z0-9]+/gi, '-')}`;
         video.hidden = true;
         toggle.hidden = false;
         sync();
-      }, { once: true });
+      });
       frame.prepend(iframe);
     };
 
     const update = () => {
-      const wantLive = desktop.matches && autoplay();
+      const wantLive = desktop.matches && autoplay() && !keepVideo;
       if (wantLive && near) loadLive();
       else if (!wantLive) dropLive();
-      if (reduceMotion.matches && !video.paused) { autoPausing = true; video.pause(); }
       sync();
     };
 
     new IntersectionObserver(([entry]) => { near = entry.isIntersecting; update(); }, { rootMargin: '200px 0px' }).observe(frame);
     new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: 0.25 }).observe(frame);
     desktop.addEventListener('change', update);
-    reduceMotion.addEventListener('change', update);
+    reduceMotion.addEventListener('change', () => {
+      if (reduceMotion.matches && !video.paused) { autoPausing = true; video.pause(); }
+      update();
+    });
   }
 </script>
