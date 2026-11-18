@@ -1,0 +1,57 @@
+---
+// Version 4, "Cinema": a centred title in the homepage's italic, then a black
+// screen band that plays the demo (or shows the lead image, or the one-line pitch).
+// Facts come last, set like closing credits.
+import HeroMedia from './HeroMedia.astro';
+const { project, heroImage, builtWith } = Astro.props;
+const { title, description, role, period, links } = project.data;
+const hasMedia = !!(project.data.demo || heroImage);
+---
+<article class="v4">
+  <header class="v4-head">
+    <a class="v-back" href="/#projects">All projects</a>
+    <h1>{title}</h1>
+    {hasMedia && <p class="v4-lede">{description}</p>}
+  </header>
+  <div class="v4-screen">
+    {hasMedia
+      ? <HeroMedia project={project} heroImage={heroImage} />
+      : <p class="v4-pitch">{description}</p>}
+  </div>
+  <div class="project-prose v4-prose"><slot /></div>
+  <footer class="v4-credits">
+    <p><span>Role</span>{role}</p>
+    {period && <p><span>When</span>{period}</p>}
+    <p><span>Built with</span>{builtWith}</p>
+    {links.length > 0 && <p class="v4-links"><span>Links</span>{links.map((link) => <a href={link.url}>{link.label}</a>)}</p>}
+    <a class="v4-all" href="/#projects">Back to all projects</a>
+  </footer>
+</article>
+
+<style is:global>
+  .v4 { --pad: 24px; }
+  @media (max-width: 380px) { .v4 { --pad: 18px; } }
+  .v4-head { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .v4 h1 { margin: 40px 0 24px; font-size: clamp(56px, 9vw, 136px); font-weight: 800; font-style: italic; font-synthesis: style; line-height: .95; letter-spacing: -.05em; overflow-wrap: anywhere; }
+  .v4-lede { max-width: 34ch; margin: 0 auto; font-size: clamp(20px, 2vw, 26px); font-weight: 600; line-height: 1.3; letter-spacing: -.015em; }
+  .v4-screen { margin: 56px calc(-1 * var(--pad)) 0; padding: clamp(32px, 5vw, 72px) var(--pad); background: #000; color: #fff; }
+  .v4-screen .project-demo, .v4-screen .hero-image { max-width: 1200px; margin: 0 auto; }
+  .v4-screen .project-demo-frame { border-color: #000; }
+  .v4-screen .project-demo figcaption { color: #aaa; }
+  .v4-screen .project-demo-toggle { border-color: #fff; }
+  .v4-screen .hero-image img { display: block; width: auto; max-width: 100%; max-height: 80vh; margin: 0 auto; }
+  .v4-pitch { max-width: 20ch; margin: 0 auto; font-size: clamp(36px, 5.5vw, 80px); font-weight: 800; font-style: italic; font-synthesis: style; line-height: 1.02; letter-spacing: -.045em; text-align: center; }
+  .v4-prose { max-width: 680px; margin: 64px auto 0; font-size: 19px; line-height: 1.6; }
+  .v4-credits { max-width: 680px; margin: 96px auto 0; padding-top: 40px; border-top: 1px solid #000; text-align: center; }
+  .v4-credits p { margin: 0 0 22px; font-size: 22px; font-weight: 700; line-height: 1.3; letter-spacing: -.015em; }
+  .v4-credits span { display: block; margin-bottom: 2px; font-size: 14px; font-weight: 500; color: #555; letter-spacing: 0; }
+  .v4-links a { display: inline-block; margin: 0 10px; }
+  .v4-credits a { color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  .v4-all { display: inline-block; margin-top: 24px; font-size: 16px; font-weight: 700; }
+  @media (max-width: 700px) {
+    .v4 h1 { margin-top: 28px; }
+    .v4-screen { margin-top: 40px; }
+    .v4-prose { margin-top: 48px; font-size: 17px; }
+    .v4-credits p { font-size: 19px; }
+  }
+</style>

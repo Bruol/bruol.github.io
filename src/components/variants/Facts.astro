@@ -1,0 +1,11 @@
+---
+// Role, time, stack and links as a plain definition list.
+const { project, builtWith, class: className } = Astro.props;
+const { role, period, links } = project.data;
+---
+<dl class:list={['facts', className]}>
+  <div><dt>Role</dt><dd>{role}</dd></div>
+  {period && <div><dt>When</dt><dd>{period}</dd></div>}
+  <div><dt>Built with</dt><dd>{builtWith}</dd></div>
+  {links.length > 0 && <div><dt>Links</dt><dd class="facts-links">{links.map((link) => <a href={link.url}>{link.label}</a>)}</dd></div>}
+</dl>

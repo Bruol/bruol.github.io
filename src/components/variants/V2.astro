@@ -1,0 +1,49 @@
+---
+// Version 2, "Pink field": the header is a full-bleed field in the BRUOL pink,
+// with the demo lifted over its lower edge. Facts read as one sentence.
+import HeroMedia from './HeroMedia.astro';
+const { project, heroImage, builtWith } = Astro.props;
+const { title, description, role, period, links } = project.data;
+const hasMedia = !!(project.data.demo || heroImage);
+---
+<article class:list={['v2', { 'v2-has-media': hasMedia }]}>
+  <header class="v2-field">
+    <a class="v2-back" href="/#projects">All projects</a>
+    <h1>{title}</h1>
+    <p class="v2-lede">{description}</p>
+  </header>
+  {hasMedia && <div class="v2-media"><HeroMedia project={project} heroImage={heroImage} /></div>}
+  <p class="v2-facts">
+    {role}{period && <>, {period}</>}. Built with {builtWith}.
+    {links.length > 0 && <span class="v2-links">{links.map((link) => <a href={link.url}>{link.label}</a>)}</span>}
+  </p>
+  <div class="project-prose v2-prose"><slot /></div>
+  <footer class="v2-end"><a href="/#projects">Back to all projects</a></footer>
+</article>
+
+<style is:global>
+  .v2 { --pad: 24px; }
+  @media (max-width: 380px) { .v2 { --pad: 18px; } }
+  .v2-field { margin: 24px calc(-1 * var(--pad)) 0; padding: 40px var(--pad) 96px; background: var(--link-accent); color: #000; text-align: center; }
+  .v2-has-media .v2-field { padding-bottom: clamp(140px, 16vw, 240px); }
+  .v2-back { color: #fff; font-weight: 700; text-decoration-color: #fff; text-decoration-line: underline; text-underline-offset: 4px; }
+  .v2-back:focus-visible { outline-color: #fff; }
+  .v2 h1 { max-width: 14ch; margin: 40px auto 28px; color: #fff; font-size: clamp(56px, 9vw, 144px); font-weight: 900; line-height: .92; letter-spacing: -.055em; overflow-wrap: anywhere; }
+  .v2-lede { max-width: 30ch; margin: 0 auto; font-size: clamp(22px, 2.4vw, 32px); font-weight: 700; line-height: 1.2; letter-spacing: -.025em; }
+  .v2-media { max-width: 1120px; margin: calc(-1 * clamp(100px, 12vw, 190px)) auto 0; padding: 0 clamp(0px, 3vw, 40px); }
+  .v2-media .project-demo { margin: 0; }
+  .v2-media .project-demo-frame, .v2-media .hero-image img { border: 0; box-shadow: 0 0 0 1px #000; }
+  .v2-media .project-demo figcaption { color: #555; }
+  .v2-media .hero-image { margin: 0; }
+  .v2-media .hero-image img { display: block; width: 100%; max-height: 80vh; object-fit: contain; background: #fff; }
+  .v2-facts { max-width: 680px; margin: 56px auto 0; font-size: 18px; font-weight: 700; line-height: 1.45; text-align: center; }
+  .v2-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 18px; margin-top: 12px; }
+  .v2-links a, .v2-end a { color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  .v2-prose { max-width: 680px; margin: 48px auto 0; padding-top: 40px; border-top: 6px solid var(--link-accent); font-size: 19px; line-height: 1.6; }
+  .v2-end { max-width: 680px; margin: 80px auto 0; font-size: 18px; font-weight: 700; text-align: center; }
+  @media (max-width: 700px) {
+    .v2-field { padding-top: 28px; }
+    .v2 h1 { margin-top: 28px; }
+    .v2-prose { font-size: 17px; }
+  }
+</style>

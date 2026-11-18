@@ -1,0 +1,56 @@
+---
+// Version 5, "Profile": the header mirrors the homepage profile — a grey square
+// that colours on hover, and stepped lines that shrink as they go, with the
+// links underneath in pink.
+import HeroMedia from './HeroMedia.astro';
+const { project, heroImage, builtWith } = Astro.props;
+const { title, description, role, period, links, icon, image } = project.data;
+const square = icon || image;
+---
+<article class="v5">
+  <a class="v-back" href="/#projects">All projects</a>
+  <header class:list={['v5-profile', { 'v5-no-square': !square }]}>
+    <h1>{title}</h1>
+    {square && <div class="v5-square"><img src={square} alt="" /></div>}
+    <p class="v5-lines">
+      <span>{description}</span>
+      <span>{role}{period && <>, {period}</>}</span>
+      <span>{builtWith}</span>
+    </p>
+    {links.length > 0 && <nav class="v5-links" aria-label="Project links">{links.map((link) => <a href={link.url}>{link.label}</a>)}</nav>}
+  </header>
+  <div class="v5-media"><HeroMedia project={project} heroImage={heroImage} /></div>
+  <div class="project-prose v5-prose"><slot /></div>
+  <p class="v5-end"><a href="/#projects">Back to all projects</a></p>
+</article>
+
+<style is:global>
+  .v5 { max-width: 1280px; margin: 0 auto; }
+  .v5-profile { display: grid; grid-template-columns: 220px minmax(0, 1fr); grid-template-areas: "name name" "square lines" "square links"; gap: 0 48px; align-items: start; margin: 32px 0 80px; }
+  .v5-no-square { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "lines" "links"; }
+  .v5 h1 { grid-area: name; padding-bottom: 32px; font-size: clamp(56px, 7.5vw, 104px); font-weight: 700; line-height: 1.02; letter-spacing: -.045em; overflow-wrap: anywhere; }
+  .v5-square { grid-area: square; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; background: #f2f2f2; }
+  .v5-square img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 250ms ease; }
+  .v5-square:has(img[src$="icon.png"]) img { width: 70%; height: auto; object-fit: contain; }
+  .v5-profile:hover .v5-square img { filter: none; }
+  .v5-lines { grid-area: lines; max-width: 980px; font-size: clamp(30px, 3.6vw, 52px); font-weight: 700; line-height: 1.1; letter-spacing: -.04em; }
+  .v5-lines span { display: block; }
+  .v5-lines span + span { margin-top: .6em; }
+  .v5-lines span:nth-child(2) { font-size: .72em; }
+  .v5-lines span:nth-child(3) { font-size: .56em; letter-spacing: -.02em; }
+  .v5-links { grid-area: links; display: flex; flex-wrap: wrap; gap: 8px 24px; padding-top: 24px; font-size: 18px; font-weight: 700; }
+  .v5-links a, .v5-end a { color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  .v5-media .project-demo, .v5-media .hero-image { margin: 0 0 72px; }
+  .v5-media .hero-image img { display: block; width: 100%; max-height: 80vh; object-fit: contain; background: #f2f2f2; }
+  .v5-prose { max-width: 700px; margin: 0 auto; font-size: 20px; line-height: 1.6; }
+  .v5-end { max-width: 700px; margin: 80px auto 0; font-size: 18px; font-weight: 700; }
+  @media (max-width: 700px) {
+    .v5-profile { grid-template-columns: 1fr; grid-template-areas: "name" "square" "lines" "links"; gap: 24px; margin-bottom: 48px; }
+    .v5 h1 { padding-bottom: 0; }
+    .v5-square { width: 140px; }
+    .v5-lines { font-size: 30px; }
+    .v5-media .project-demo, .v5-media .hero-image { margin-bottom: 40px; }
+    .v5-prose { font-size: 17px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .v5-square img { transition: none; } }
+</style>

@@ -1,0 +1,47 @@
+---
+// Version 1, "Wordmark": the title is set at the scale of the BRUOL wordmark,
+// left-aligned like the homepage. Facts sit in a narrow column beside the story.
+import HeroMedia from './HeroMedia.astro';
+import Facts from './Facts.astro';
+const { project, heroImage, builtWith } = Astro.props;
+const { title, description } = project.data;
+---
+<article class="v1">
+  <a class="v-back" href="/#projects">All projects</a>
+  <h1>{title}</h1>
+  <div class="v1-media"><HeroMedia project={project} heroImage={heroImage} /></div>
+  <div class="v1-body">
+    <Facts project={project} builtWith={builtWith} class="v1-facts" />
+    <div class="v1-story">
+      <p class="v1-lede">{description}</p>
+      <div class="project-prose"><slot /></div>
+    </div>
+  </div>
+  <footer class="v1-end"><a href="/#projects">Back to all projects</a></footer>
+</article>
+
+<style is:global>
+  .v1 { max-width: 1280px; margin: 0 auto; }
+  .v-back { display: inline-block; font-size: 16px; font-weight: 700; color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  .v1 h1 { margin: 40px 0 48px; font-size: clamp(56px, 10.5vw, 168px); font-weight: 900; line-height: .9; letter-spacing: -.06em; overflow-wrap: anywhere; }
+  .v1-media .project-demo, .v1-media .hero-image { margin: 0 0 72px; }
+  .v1-media .hero-image img { display: block; width: 100%; max-height: 80vh; object-fit: contain; background: #f2f2f2; }
+  .v1-body { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; align-items: start; }
+  .v1-facts { position: sticky; top: 32px; display: grid; gap: 24px; margin: 0; padding-top: 18px; border-top: 6px solid #000; }
+  .facts dt { font-size: 14px; font-weight: 500; color: #555; }
+  .facts dd { margin: 2px 0 0; font-size: 18px; font-weight: 700; line-height: 1.35; letter-spacing: -.01em; }
+  .facts-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .facts-links a { color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  .v1-story { max-width: 720px; }
+  .v1-lede { font-size: clamp(26px, 2.6vw, 36px); font-weight: 700; line-height: 1.18; letter-spacing: -.03em; margin: 0 0 32px; }
+  .v1 .project-prose { font-size: 19px; line-height: 1.6; }
+  .v1-end { margin-top: 96px; padding-top: 18px; border-top: 6px solid #000; font-size: 20px; font-weight: 700; }
+  .v1-end a { color: var(--link-accent); text-decoration-line: underline; text-underline-offset: 4px; }
+  @media (max-width: 860px) {
+    .v1 h1 { margin: 28px 0 32px; }
+    .v1-media .project-demo, .v1-media .hero-image { margin-bottom: 40px; }
+    .v1-body { grid-template-columns: 1fr; gap: 40px; }
+    .v1-facts { position: static; order: 2; }
+    .v1 .project-prose { font-size: 17px; }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+// Design exploration: five versions of the project page, compared side by side.
+// Remove this route (and src/components/variants/) once a version is chosen.
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import V1 from '../../../components/variants/V1.astro';
+import V2 from '../../../components/variants/V2.astro';
+import V3 from '../../../components/variants/V3.astro';
+import V4 from '../../../components/variants/V4.astro';
+import V5 from '../../../components/variants/V5.astro';
+
+const versions = { 1: V1, 2: V2, 3: V3, 4: V4, 5: V5 } as const;
+const names = { 1: 'Wordmark', 2: 'Pink field', 3: 'Split', 4: 'Cinema', 5: 'Profile' } as const;
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return ['1', '2', '3', '4', '5'].flatMap((v) =>
+    projects.map((project) => ({ params: { v, id: project.id }, props: { project } })));
+}
+
+const { v, id } = Astro.params;
+const { project } = Astro.props;
+const { Content } = await render(project);
+const Version = versions[Number(v) as keyof typeof versions];
+const { title, description, image } = project.data;
+
+// Hero media: the demo, or the lead image when the article doesn't already show it.
+const heroImage = !project.data.demo && image && !project.body?.includes(image) ? image : undefined;
+const tags = project.data.tags;
+const builtWith = tags.length > 1 ? `${tags.slice(0, -1).join(', ')} and ${tags.at(-1)}` : tags[0];
+const showcase = ['cesbot', 'flateroo', 'scion-test-environment', 'cloudflare-smtp'];
+---
+<BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>
+  <meta name="robots" content="noindex" slot="head" />
+  <Version project={project} heroImage={heroImage} builtWith={builtWith}><Content /></Version>
+  <nav class="version-switch" aria-label="Design versions">
+    <span>Version</span>
+    {Object.entries(names).map(([n, name]) => (
+      <a href={`/variants/${n}/${id}/`} aria-current={n === v ? 'page' : undefined} title={name}>{n}</a>
+    ))}
+    <span class="version-sep" aria-hidden="true"></span>
+    {showcase.map((slug) => (
+      <a href={`/variants/${v}/${slug}/`} aria-current={slug === id ? 'page' : undefined}>{slug.split('-')[0]}</a>
+    ))}
+  </nav>
+</BaseLayout>
+
+<style is:global>
+  .version-switch { position: fixed; z-index: 20; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px; background: #000; color: #fff; font-size: 13px; font-weight: 600; max-width: calc(100vw - 24px); overflow-x: auto; }
+  .version-switch span:first-child { padding: 0 8px; }
+  .version-switch a { padding: 6px 10px; color: #fff; text-decoration: none; white-space: nowrap; }
+  .version-switch a:hover { background: #333; text-decoration: none; }
+  .version-switch a[aria-current] { background: var(--link-accent); }
+  .version-sep { width: 1px; align-self: stretch; background: #555; margin: 0 6px; }
+</style>
