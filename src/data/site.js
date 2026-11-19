@@ -16,9 +16,8 @@ export const site = {
   ]
 };
 
-// Hobby stats, updated by hand. Lifts are top working sets from Hevy.
+// Hobby stats as of Nov 2026, updated by hand. Lifts are top working sets from Hevy.
 export const hobbies = {
-  updated: 'Nov 2026',
   marathon: { race: 'Zurich Marathon', time: '4:08:51' },
   ride: { km: 234, elevation: '3,517 m', href: 'https://www.strava.com/activities/15385635139' },
   strava: { weeks: 130, activities: 411 },
