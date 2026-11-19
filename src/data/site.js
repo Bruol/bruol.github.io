@@ -25,7 +25,7 @@ export const hobbies = {
   lifts: [
     { name: 'Deadlift', kg: 165, reps: 6 },
     { name: 'Bench press', kg: 100, reps: 6 },
-    { name: 'Squat', kg: 100, reps: 9 },
+    { name: 'Barbell row', kg: 115, reps: 6 },
     { name: 'Bulgarian split squat', kg: 72, reps: 16 }
   ]
 };
