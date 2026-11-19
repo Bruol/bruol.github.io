@@ -1,11 +1,12 @@
 ---
 import { hobbies } from '../data/site.js';
-const { marathon, strava, workouts, lifts, updated } = hobbies;
+const { marathon, ride, strava, workouts, lifts, updated } = hobbies;
 ---
 <section class="hobbies" aria-labelledby="hobbies-title">
   <h2 id="hobbies-title" class="hobbies-title">Hobbies <span>· as of {updated}</span></h2>
   <dl class="hobbies-stats">
     <div><dt>Marathon</dt><dd>{marathon.time} <span>{marathon.race}</span></dd></div>
+    <div><dt>Longest ride</dt><dd><a href={ride.href} rel="noopener">{ride.km} km <span>{ride.elevation} up ↗</span></a></dd></div>
     <div><dt>Strava streak</dt><dd>{strava.weeks} weeks <span>{strava.activities} activities</span></dd></div>
     {lifts.map((lift) => (
       <div><dt>{lift.name}</dt><dd>{lift.kg} kg × {lift.reps}</dd></div>
@@ -25,5 +26,6 @@ const { marathon, strava, workouts, lifts, updated } = hobbies;
   .hobbies-stats { margin: 0; display: grid; gap: 4px; font-size: 13px; line-height: 1.4; }
   .hobbies-stats div { display: flex; justify-content: space-between; gap: 16px; }
   .hobbies-stats dt { font-weight: 400; }
+  .hobbies-stats dd a:hover { color: var(--link-accent); }
   .hobbies-stats dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 </style>

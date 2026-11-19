@@ -20,6 +20,7 @@ export const site = {
 export const hobbies = {
   updated: 'Nov 2026',
   marathon: { race: 'Zurich Marathon', time: '4:08:51' },
+  ride: { km: 234, elevation: '3,517 m', href: 'https://www.strava.com/activities/15385635139' },
   strava: { weeks: 130, activities: 411 },
   workouts: 167,
   lifts: [
