@@ -5,27 +5,72 @@ const { marathon, ride, strava, workouts, lifts, updated } = hobbies;
 <section class="hobbies" aria-labelledby="hobbies-title">
   <h2 id="hobbies-title" class="hobbies-title">Hobbies <span>· as of {updated}</span></h2>
   <dl class="hobbies-stats">
-    <div><dt>Marathon</dt><dd>{marathon.time} <span>{marathon.race}</span></dd></div>
-    <div><dt>Longest ride</dt><dd><a href={ride.href} rel="noopener">{ride.km} km <span>{ride.elevation} up ↗</span></a></dd></div>
-    <div><dt>Strava streak</dt><dd>{strava.weeks} weeks <span>{strava.activities} activities</span></dd></div>
+    <div><dt>Marathon</dt><dd>{marathon.time}</dd></div>
+    <div><dt>Longest ride</dt><dd><a href={ride.href} rel="noopener" title={`${ride.km} km, ${ride.elevation} climbing on Strava`}>{ride.km} km ↗</a></dd></div>
+    <div><dt>Strava streak</dt><dd>{strava.weeks} wk</dd></div>
+    <div><dt>Gym sessions</dt><dd>{workouts}</dd></div>
     {lifts.map((lift) => (
       <div><dt>{lift.name}</dt><dd>{lift.kg} kg × {lift.reps}</dd></div>
     ))}
-    <div><dt>Gym sessions</dt><dd>{workouts} <span>logged on Hevy</span></dd></div>
   </dl>
 </section>
 
+<script is:inline>
+  {
+    // Pin the stats to the bottom right of the first screen when that corner
+    // is empty; otherwise leave them in flow below the profile.
+    const box = document.querySelector('.hobbies');
+    const profile = document.querySelector('.opening-view .profile');
+    const textRect = (el) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getBoundingClientRect();
+    };
+    const place = () => {
+      box.classList.remove('at-screen-edge');
+      if (window.innerWidth <= 700) return;
+      const top = window.innerHeight - box.offsetHeight - 16;
+      const right = document.documentElement.clientWidth - 24;
+      const left = right - box.offsetWidth;
+      const blockers = [
+        ...profile.querySelectorAll('h1, .portrait, .social-links a, .actions a'),
+      ].map((el) => el.getBoundingClientRect())
+        .concat([...profile.querySelectorAll('.role-line')].map(textRect));
+      const clear = blockers.every((r) =>
+        r.bottom + window.scrollY + 24 <= top || r.right + 32 <= left);
+      if (!clear) return;
+      box.style.setProperty('--hobbies-top', `${top}px`);
+      box.classList.add('at-screen-edge');
+    };
+    place();
+    document.fonts.ready.then(() => {
+      place();
+      new ResizeObserver(place).observe(profile);
+    });
+    window.addEventListener('resize', place, { passive: true });
+    window.addEventListener('pageshow', place);
+  }
+</script>
+
 <style>
-  .hobbies { margin-left: auto; width: min(100%, 340px); border-top: 1px solid #000; padding-top: 12px; }
+  .hobbies { align-self: flex-end; width: min(100%, 600px); margin-top: 40px; border-top: 1px solid #000; padding-top: 10px; }
+  .hobbies.at-screen-edge { position: absolute; top: var(--hobbies-top); right: 24px; margin: 0; }
   .hobbies-title {
     margin: 0 0 8px;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: .75rem; font-weight: 700; letter-spacing: .035em; text-transform: uppercase;
+    font-size: .7rem; font-weight: 700; letter-spacing: .035em; text-transform: uppercase;
   }
-  .hobbies-title span, .hobbies-stats dd span { color: #555; font-weight: 400; }
-  .hobbies-stats { margin: 0; display: grid; gap: 4px; font-size: 13px; line-height: 1.4; }
-  .hobbies-stats div { display: flex; justify-content: space-between; gap: 16px; }
-  .hobbies-stats dt { font-weight: 400; }
+  .hobbies-title span { color: #555; font-weight: 400; }
+  .hobbies-stats { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 16px; }
+  .hobbies-stats dt {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .68rem; font-weight: 400; color: #555; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .hobbies-stats dd { margin: 0; font-size: 16px; line-height: 1.25; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .hobbies-stats dd a:hover { color: var(--link-accent); }
-  .hobbies-stats dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  @media (max-width: 700px) {
+    .hobbies { width: 100%; }
+    .hobbies-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 </style>
