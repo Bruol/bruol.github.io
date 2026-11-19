@@ -15,3 +15,17 @@ export const site = {
     { label: 'Email', href: 'mailto:contact@bruol.slmail.me' }
   ]
 };
+
+// Hobby stats, updated by hand. Lifts are top working sets from Hevy.
+export const hobbies = {
+  updated: 'Nov 2026',
+  marathon: { race: 'Zurich Marathon', time: '4:08:51' },
+  strava: { weeks: 130, activities: 411 },
+  workouts: 167,
+  lifts: [
+    { name: 'Deadlift', kg: 165, reps: 6 },
+    { name: 'Bench press', kg: 100, reps: 6 },
+    { name: 'Squat', kg: 100, reps: 9 },
+    { name: 'Bulgarian split squat', kg: 72, reps: 16 }
+  ]
+};

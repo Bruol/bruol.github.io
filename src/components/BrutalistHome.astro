@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import EthLogo from './EthLogo.astro';
+import Hobbies from './Hobbies.astro';
 import Portrait from './Portrait.astro';
 import ProjectList from './ProjectList.astro';
 import ScrollCue from './ScrollCue.astro';
@@ -35,6 +36,7 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
     </main>
     <footer class="portfolio-footer">
       <span>© 2026 bruol</span>
+      <Hobbies />
     </footer>
   </div>
 </BaseLayout>
