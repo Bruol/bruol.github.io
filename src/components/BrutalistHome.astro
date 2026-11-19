@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site.js';
 import EthLogo from './EthLogo.astro';
+import Hobbies from './Hobbies.astro';
 import Portrait from './Portrait.astro';
 import ProjectList from './ProjectList.astro';
 import ScrollCue from './ScrollCue.astro';
@@ -29,6 +30,7 @@ const [jobRole, workplace] = jobTitle.split(' @ ');
           <a href={site.cvUrl}>CV</a>
         </nav>
       </section>
+      <Hobbies />
       <ScrollCue />
       </div>
       <ProjectList />
