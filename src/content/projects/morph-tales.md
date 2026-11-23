@@ -7,6 +7,7 @@ tags: ["Unity", "Firebase", "BigQuery", "Looker Studio"]
 order: 4
 links: [{"label": "ETH project page", "url": "https://ethz.ch/en/campus/getting-to-know/discover/tours/morph-tales.html"}, {"label": "Game Technology Center", "url": "https://gtc.inf.ethz.ch/"}]
 period: "2023–2025"
+youtube: {"id": "EpeN2dBK3Ho", "label": "Morph Tales video"}
 ---
 
 At ETH’s Game Technology Center, I developed Unity features for Morph Tales and built its analytics pipeline: Firebase for collection, BigQuery for analysis, and Looker Studio for dashboards.
