@@ -21,7 +21,7 @@ const neighbours = [
 const { Content } = await render(project);
 const { title, description, image } = project.data;
 // Lead image beside the story, unless the article already shows it.
-const heroImage = !project.data.demo && image && !project.body?.includes(image) ? image : undefined;
+const heroImage = !project.data.demo && !project.data.youtube && image && !project.body?.includes(image) ? image : undefined;
 ---
 
 <BaseLayout title={`${title} | Projects | bruol`} description={description} image={image}>

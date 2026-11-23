@@ -1,8 +1,22 @@
 ---
 import ProjectDemo from './ProjectDemo.astro';
 const { project, heroImage } = Astro.props;
-const { demo, imageAlt } = project.data;
+const { demo, youtube, imageAlt } = project.data;
 ---
-{demo ? <ProjectDemo {...demo} /> : heroImage && (
+{demo ? <ProjectDemo {...demo} /> : youtube ? (
+  <figure class="project-video">
+    <div class="project-video-frame">
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${youtube.id}?rel=0`}
+        title={youtube.label}
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <figcaption>{youtube.label}</figcaption>
+  </figure>
+) : heroImage && (
   <figure class="hero-image"><img src={heroImage} alt={imageAlt ?? ''} /></figure>
 )}
