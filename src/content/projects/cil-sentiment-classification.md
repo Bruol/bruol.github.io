@@ -5,8 +5,8 @@ category: "Applied AI"
 role: "ETH CIL course project with Coralie Sage, Fabius Grünhagen, and Finn Brunke"
 period: "2025"
 tags: ["Python", "PyTorch", "RoBERTa", "Hugging Face Transformers", "NLP"]
-order: 28
-links: [{"label": "Kaggle competition", "url": "https://www.kaggle.com/competitions/ethz-cil-text-classification-2025"}]
+order: 13
+links: []
 ---
 
 With [Coralie Sage](https://www.linkedin.com/in/coraliesage/), [Fabius Grünhagen](https://gruefa.me/), and [Finn Brunke](https://www.linkedin.com/in/finn-brunke/) (team FLCF), I worked on the Spring 2025 Computational Intelligence Lab (`263-0008-00 S`) Kaggle text sentiment classification competition at ETH Zurich. Over 59 submissions, we fine-tuned `RoBERTa-large` in PyTorch using Hugging Face Transformers.

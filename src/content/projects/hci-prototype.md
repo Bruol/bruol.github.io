@@ -4,7 +4,7 @@ description: "Two habit-tracking dashboards built for an HCI course comparison."
 category: "Products & interfaces"
 role: "Collaborative HCI course prototype"
 tags: ["React Native", "Expo", "UI Kitten", "Interaction design"]
-order: 22
+order: 23
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/hifi-prototype"}]
 ---
 

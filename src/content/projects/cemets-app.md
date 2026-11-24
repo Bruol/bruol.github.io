@@ -4,7 +4,7 @@ description: "A conference app for schedules, speakers, slides, and saved events
 category: "Products & interfaces"
 role: "Application development · ETH CEMETS"
 tags: ["TanStack Start", "Cloudflare Workers", "Expo", "Sanity", "Clerk"]
-order: 17
+order: 18
 links: [{"label": "CEMETS at ETH", "url": "https://cemets.ethz.ch/"}]
 image: "/projects/cemets/app.jpg"
 imageAlt: "CEMETS conference app screen montage"

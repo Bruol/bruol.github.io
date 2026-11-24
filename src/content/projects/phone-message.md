@@ -4,7 +4,7 @@ description: "An ESP32 device that plays recorded voice messages selected on a t
 category: "Hardware"
 role: "Hardware and firmware development"
 tags: ["ESP32", "C++", "I2S", "PlatformIO", "MicroSD"]
-order: 19
+order: 20
 links: [{"label": "GitHub repository and demo", "url": "https://github.com/Bruol/phoneMessage"}]
 image: "/projects/phone-message/telephone.jpg"
 imageAlt: "Orange telephone with a pink keypad and coiled cord"

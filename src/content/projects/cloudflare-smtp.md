@@ -4,7 +4,7 @@ description: "A TypeScript SMTP client for Cloudflare Workers."
 category: "Tools & automation"
 role: "Library author"
 tags: ["TypeScript", "Cloudflare Workers", "SMTP", "STARTTLS"]
-order: 13
+order: 14
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/cloudflare-smtp"}]
 ---
 

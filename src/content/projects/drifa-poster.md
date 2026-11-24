@@ -4,7 +4,7 @@ description: "A p5.js poster generated from paired workout data."
 category: "Products & interfaces"
 role: "Personal creative-coding project"
 tags: ["JavaScript", "p5.js", "Data visualization", "Generative design"]
-order: 18
+order: 19
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/drifa-poster"}]
 image: "/projects/drifa/poster.png"
 imageAlt: "Drifa generative workout poster"

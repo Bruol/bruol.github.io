@@ -4,7 +4,7 @@ description: "A scraper that adds a nearby club’s events to my calendar throug
 category: "Tools & automation"
 role: "Personal project"
 tags: ["TypeScript", "Express", "Web scraping", "ICS", "Fly.io"]
-order: 21
+order: 22
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/zinkbad_calendar"}]
 ---
 

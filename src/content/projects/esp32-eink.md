@@ -4,7 +4,7 @@ description: "An ESP32 experiment with a four-color Waveshare e-paper display."
 category: "Hardware"
 role: "Hardware experiment"
 tags: ["ESP32", "C++", "PlatformIO", "E-paper"]
-order: 16
+order: 17
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/eink"}]
 ---
 

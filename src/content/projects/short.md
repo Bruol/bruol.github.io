@@ -4,7 +4,7 @@ description: "A Cloudflare Workers URL shortener using KV storage and reverse pr
 category: "Tools & automation"
 role: "Personal project"
 tags: ["TypeScript", "Cloudflare Workers", "Workers KV", "Reverse proxy"]
-order: 14
+order: 15
 links: [{"label": "GitHub repository", "url": "https://github.com/Bruol/url-shortener-cf"}, {"label": "Live website", "url": "https://short.bruol.me/"}]
 ---
 
