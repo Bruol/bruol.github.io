@@ -10,6 +10,7 @@ const selected = [
   'zinkbad-calendar', 'hci-prototype', 'bgp-routeviews', 'keyboard-sound-trigger',
   'mqtt-gas-counter', 'japanese-election-scraper', 'wifi-thermometer', 'cemets-app',
   'sql-ast-research', 'database-query-reduction', 'compiler-design',
+  'cil-sentiment-classification',
 ];
 
 const index = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
